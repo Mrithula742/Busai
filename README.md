@@ -58,9 +58,12 @@ Ten journal publications are listed below.
    Scientific Data · 2025 · Journal data descriptor  
    Reference for representing bus routes, stops and connections.
 
-11. **[Preference-Aware Multimodal Journey Planner: An Optimization Approach for Smart Mobility](https://doi.org/10.3390/smartcities9060103)**  
-    Smart Cities · 2026 · Journal article  
-    Estimates traveller preferences to rank alternative journeys.
+11. **[Adaptive physics-informed machine learning for bus travel time prediction]
+(https://doi.org/10.1016/j.asoc.2026.115435)**
+    Applied Soft Computing · 2026 · Journal article
+    Uses Phy-LSTM and XGBoost for bus travel-time prediction.
+
+
 
 ---
 
