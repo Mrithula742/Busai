@@ -428,8 +428,8 @@ Only results obtained from completed experiments should be reported here.
 
 | Model | MAE | RMSE | Evaluation Data |
 |---|---:|---:|---|
-| Baseline | To be updated | To be updated | Same test split |
-| ST-GCN | To be updated | To be updated | Same test split |
+| Baseline | 3.052 | 6.276 | Same test split |
+| ST-GCN | 2.534| 4.807 | Same test split |
 
 ---
 
@@ -437,8 +437,8 @@ Only results obtained from completed experiments should be reported here.
 
 | Model | Accuracy | F1-score |
 |---|---:|---:|
-| Baseline | To be updated | To be updated |
-| ST-GCN-derived crowd classes | To be updated | To be updated |
+| Baseline | 0.9276 | 0.9256 |
+| ST-GCN-derived crowd classes | 0.8629 | 0.8632 |
 
 > Final numbers will be added after verifying the corresponding saved experiment, data split and evaluation configuration.
 
