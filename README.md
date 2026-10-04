@@ -1,103 +1,877 @@
-# BusSure
-### AI-Assisted Bus Journey Planning for Chennai
+# 🚌 BusSure — AI-Based Public Bus Journey Reliability System
 
-## Problem
+**BusSure** is a research-oriented AI system for predicting **bus travel time, passenger crowd levels, and journey reliability** using spatio-temporal deep-learning techniques.
 
-Chennai bus passengers need to decide when to leave, which bus to take and which route suits them best. Timetables alone cannot explain actual delays or expected crowding.
+Instead of providing only scheduled bus timings, BusSure aims to help passengers understand:
 
-## Proposed Solution
+- How long the journey may take
+- Expected bus arrival/travel time
+- How crowded the bus may be
+- How reliable the journey is likely to be
+- Factors that may contribute to delay or crowding
 
-BusSure will compare journey options using the passenger’s location, destination and preferences.
+BusSure is designed as a **general public-transport research framework** and is not restricted to a single city or state.
 
-Planned features:
-- GPS-based vehicle tracking.
-- Machine-learning-based travel-time prediction.
-- Passenger occupancy and crowd estimation.
-- Route recommendations based on time, crowding and transfers.
-- Software simulation of vehicle delay-information sharing.
-
-
-## Research References
-
-Ten journal publications are listed below.
-
-1. **[Development of an individualized multimodal trip planner for a MaaS system]
-   (https://doi.org/10.1016/j.sftr.2025.100498)**  
-   Sustainable Futures · 2025 · Journal article  
-   Personalised journey planning. Proposed base paper; full-text review pending.
-
-3. **[GPS-2-GTFS](https://doi.org/10.1016/j.simpa.2025.100780)**  
-   Software Impacts · 2025 · Software journal article  
-   Converts raw GPS readings into structured transit information.
-
-4. **[From Raw GPS to GTFS: A Real-World Open Dataset for Bus Travel Time Prediction](https://doi.org/10.3390/data10080119)**  
-   Data · 2025 · Dataset journal article  
-   Provides the Astana dataset selected for travel-time experiments.
-
-5. **[Data-driven analysis of run-level bus alighting patterns for accurate predictions and operational efficiency](https://doi.org/10.1016/j.ijtst.2025.06.006)**  
-   International Journal of Transportation Science and Technology · 2025 · Journal article  
-   Studies passenger alighting using Chennai electronic-ticketing records.
-
-6. **[DeepSense-V2V](https://doi.org/10.1109/TVT.2025.3578349)**  
-   IEEE Transactions on Vehicular Technology · 2025 · Journal article  
-   Background research on vehicle-to-vehicle sensing and communication.
-
-7. **[CPTOND-2025: National-Scale Bus-Metro Vector Dataset](https://doi.org/10.1038/s41597-025-06505-4)**  
-   Scientific Data · 2026 · Journal data descriptor  
-   Reference for organising bus and metro network information.
-
-8. **[Bus user itinerary choice: Can crowding information help shift riders?](https://doi.org/10.1016/j.cstp.2025.101375)**  
-   Case Studies on Transport Policy · 2025 · Journal article  
-   Examines how crowding information influences journey choices.
-
-9. **[Assessing public transport accessibility using GPS data](https://doi.org/10.1186/s12544-025-00733-w)**  
-   European Transport Research Review · 2025 · Journal article  
-   Supports location-based analysis of access to public transport.
-
-10. **[A Comprehensive Vector Dataset of Bus Networks Across China for the Year 2024](https://doi.org/10.1038/s41597-025-04894-0)**  
-   Scientific Data · 2025 · Journal data descriptor  
-   Reference for representing bus routes, stops and connections.
-
-11. **[Adaptive physics-informed machine learning for bus travel time prediction]
-(https://doi.org/10.1016/j.asoc.2026.115435)**
-    Applied Soft Computing · 2026 · Journal article
-    Uses Phy-LSTM and XGBoost for bus travel-time prediction.
-
-
+The current models are developed and evaluated using publicly available transport datasets. Performance in a new city must be experimentally evaluated before claiming the same accuracy.
 
 ---
 
-## Datasets
+# 1. Research Problem
 
-### Chennai MTC GTFS
-**Purpose:** Route and timetable-based journey planning.
+Public bus journeys are affected by changing traffic conditions, stop-level delays, passenger boarding and alighting, dwell time, time of day, and interactions between connected bus stops.
 
-Contains routes, stops, trips and scheduled timings. It is an unofficial community-maintained feed and does not contain historical actual bus arrivals.
+Traditional timetable-based systems mainly answer:
 
-[Source repository](https://github.com/ungalsoththu/ChennaiGTFS) · [Download ZIP](https://github.com/ungalsoththu/ChennaiGTFS/raw/main/data/mtc-gtfs.zip)
+> **“When is the bus scheduled to arrive?”**
 
-### Astana Bus-Operation Data
-**Purpose:** Initial travel-time prediction experiments.
+However, passengers also need answers to questions such as:
 
-Downloaded `segment_level_data.zip` and `gtfs_data.zip` from the dataset associated with Research Reference 3.
+> **“How long will my actual journey take?”**
 
-These records describe Astana, Kazakhstan. Chennai observations are needed to validate performance locally.
+> **“Will the bus be crowded?”**
 
-[Dataset and downloads](https://doi.org/10.5281/zenodo.15769359) · [Related paper](https://doi.org/10.3390/data10080119)
+> **“How reliable is this journey?”**
 
-**Licence:** CC BY 4.0.
+BusSure therefore investigates the following research problem:
 
-### Synthetic Static Crowding Data
-**Purpose:** Test passenger-count calculations.
+> **Can spatio-temporal deep-learning models capture the spatial and temporal behaviour of public bus networks to predict travel time and passenger crowding and use these predictions to provide journey-level reliability information?**
 
-Created 3,000 simulated ticket transactions using Chennai GTFS route, trip and stop references:
-- 1,000 Chennai One-style records.
-- 2,000 conductor ETM-style records.
+The project focuses on two primary prediction tasks:
 
-Passenger quantities and source proportions are simulation assumptions. No actual Chennai One or MTC ETM transactions were obtained.
+1. **Bus travel-time / ETA prediction**
+2. **Passenger load / crowd prediction**
 
-Occupancy is calculated by adding boarding passengers and subtracting alighting passengers. Synthetic results demonstrate software behaviour, not real-world prediction accuracy.
+The outputs of these models are subsequently used to support journey reliability and passenger decision-making.
 
-[Research reference](https://doi.org/10.1016/j.ijtst.2025.06.006) · [Official MTC ticketing information](https://mtcbus.tn.gov.in/Home/facilities)
+---
 
-These sources motivate the design; they do not supply the generated passenger values.
+# 2. Research Objectives
+
+The main objectives of BusSure are:
+
+1. Model a public bus network as a **spatio-temporal system**.
+2. Predict bus travel time using historical and network-related information.
+3. Predict passenger load/crowding using boarding, alighting and temporal information.
+4. Convert predicted passenger load into understandable **Low, Medium and High** crowd levels.
+5. Combine travel-time and crowd information to support journey reliability assessment.
+6. Evaluate the proposed models using quantitative performance metrics.
+7. Compare the proposed approaches with appropriate baseline methods.
+8. Evaluate performance on unseen data to study model generalization.
+9. Provide a reproducible experimental pipeline.
+
+---
+
+# 3. Research Gap and Proposed Contribution
+
+Previous research has independently investigated several public-transport problems, including:
+
+- Bus arrival-time prediction
+- Bus travel-time prediction
+- Passenger-demand forecasting
+- Passenger occupancy prediction
+- Delay propagation
+- Public transport network modelling
+
+Graph-based deep-learning approaches have demonstrated that connected bus stops and road segments contain important spatial relationships.
+
+Similarly, temporal deep-learning methods have demonstrated that historical observations are important for understanding changing transport conditions.
+
+Passenger-flow studies have also shown that crowding varies both spatially across the transport network and temporally throughout the day.
+
+However, these problems are frequently investigated independently.
+
+## BusSure's Proposed Contribution
+
+BusSure investigates an integrated framework in which:
+
+**Spatio-temporal travel-time prediction**
+
+and
+
+**Spatio-temporal passenger crowd prediction**
+
+are combined to support:
+
+**Journey-level reliability and passenger decision support.**
+
+The project therefore investigates not only:
+
+> **“When will the bus arrive?”**
+
+but also:
+
+> **“How long may the journey take, how crowded may it be, and how reliable is that journey information?”**
+
+The contribution is evaluated experimentally rather than assuming that the proposed approach automatically outperforms existing methods.
+
+---
+
+# 4. Proposed Methodology
+
+BusSure currently contains two primary AI modelling components.
+
+## 4.1 Travel-Time Prediction — DCRNN
+
+For bus travel-time prediction, BusSure uses a:
+
+### Diffusion Convolutional Recurrent Neural Network (DCRNN)
+
+Bus travel-time prediction contains two important dependencies:
+
+### Spatial Dependency
+
+A bus does not move between independent locations.
+
+Conditions at one stop or road segment can affect subsequent parts of the route.
+
+### Temporal Dependency
+
+Travel conditions also change over time because of:
+
+- traffic,
+- peak/off-peak periods,
+- operational variation,
+- previous bus movement,
+- and historical travel patterns.
+
+DCRNN combines:
+
+**Diffusion-based graph convolution**
+
+with
+
+**Recurrent neural-network temporal modelling**
+
+to learn both types of relationships.
+
+### Input
+
+Depending on the available dataset features, model inputs are constructed from:
+
+- Bus/segment observations
+- Stop/segment relationships
+- Historical travel information
+- Temporal information
+- Network connectivity
+- Operational attributes
+
+### Output
+
+The model predicts travel-time information that can be used for:
+
+- ETA estimation
+- Journey-duration estimation
+- Delay analysis
+- Journey reliability assessment
+
+---
+
+## 4.2 Passenger Crowd Prediction — ST-GCN
+
+For passenger crowd prediction, BusSure uses a:
+
+### Spatio-Temporal Graph Convolutional Network (ST-GCN)
+
+Passenger crowding is also a spatial and temporal problem.
+
+Crowding at a particular location may depend on:
+
+- Passenger boarding
+- Passenger alighting
+- Previous passenger load
+- Time of day
+- Stop relationships
+- Route progression
+- Passenger-flow patterns
+
+ST-GCN is used to learn these spatial and temporal relationships.
+
+### Input
+
+Depending on dataset availability, features include:
+
+- Boarding counts
+- Alighting counts
+- Passenger load
+- Stop information
+- Network relationships
+- Temporal features
+
+### Output
+
+The model predicts passenger load/crowding.
+
+For passenger-facing interpretation, predicted crowd conditions can be represented as:
+
+🟢 **Low**
+
+🟡 **Medium**
+
+🔴 **High**
+
+The exact thresholds used to create these categories must be documented with the final experiment.
+
+---
+
+# 5. Overall BusSure Architecture
+
+```text
+                 PUBLIC TRANSPORT DATA
+                          │
+              ┌───────────┴───────────┐
+              │                       │
+       Operational Data         Passenger Data
+              │                       │
+       GTFS / AVL Data       Boarding / Alighting
+              │                       │
+              ▼                       ▼
+        Preprocessing            Preprocessing
+              │                       │
+              ▼                       ▼
+        Network Graph            Network Graph
+              │                       │
+              ▼                       ▼
+            DCRNN                   ST-GCN
+              │                       │
+              ▼                       ▼
+      Travel-Time / ETA         Passenger Load
+              │                       │
+              └───────────┬───────────┘
+                          │
+                          ▼
+                Journey Reliability
+                          │
+                          ▼
+               Passenger Information
+```
+
+---
+
+# 6. Datasets Used
+
+Two main public transport datasets are used for the current BusSure experiments.
+
+Large raw datasets do not need to be stored directly inside this repository. Their original download sources are provided below for reproducibility.
+
+---
+
+## 6.1 SUNT Dataset
+
+### Purpose
+
+**Bus travel-time prediction**
+
+### Model
+
+**DCRNN**
+
+The SUNT dataset provides public transport operational/network information suitable for analysing bus movement and travel-time behaviour.
+
+The dataset contains transport information used to construct temporal observations and network relationships required for travel-time modelling.
+
+### Dataset Source
+
+**Mendeley Data**
+
+https://data.mendeley.com/datasets/85fdtx3kr5/1
+
+### Use in BusSure
+
+The dataset is processed to construct:
+
+- Network nodes
+- Network connections
+- Temporal observations
+- Historical travel sequences
+- Travel-time prediction targets
+
+These processed data are then used to train and evaluate the DCRNN model.
+
+---
+
+## 6.2 SSA_StopBusTimeSeries_5
+
+### Purpose
+
+**Passenger load / crowd prediction**
+
+### Model
+
+**ST-GCN**
+
+This dataset provides bus-stop time-series information containing passenger-flow information suitable for crowd prediction.
+
+Relevant information includes:
+
+- Passenger boarding
+- Passenger alighting
+- Passenger load
+- Stop-level observations
+- Temporal observations
+
+### Dataset Source
+
+**Hugging Face**
+
+https://huggingface.co/datasets/labiaufba/SSA_StopBusTimeSeries_5
+
+### Use in BusSure
+
+Passenger observations are transformed into temporal sequences and associated with the public transport network.
+
+These sequences are used to train the ST-GCN model to predict passenger load.
+
+Predicted load is subsequently interpreted as:
+
+```text
+Low Crowd
+Medium Crowd
+High Crowd
+```
+
+for passenger-facing information.
+
+---
+
+# 7. Data Preprocessing
+
+The preprocessing pipeline includes the following stages where applicable:
+
+1. Load the raw transport data.
+2. Inspect missing and invalid observations.
+3. Parse date and time information.
+4. Arrange observations chronologically.
+5. Map records to stops, routes or segments.
+6. Construct graph nodes and edges.
+7. Generate temporal features.
+8. Generate historical input sequences.
+9. Construct prediction targets.
+10. Split data into training, validation and test sets.
+
+## Preventing Data Leakage
+
+Transport data are time-dependent.
+
+Therefore, where appropriate, the dataset is split chronologically so that future observations do not unintentionally appear in the training data.
+
+Any preprocessing parameters learned from data should be obtained from the training set and subsequently applied to validation and test sets.
+
+---
+
+# 8. Experimental Evaluation
+
+The AI models are evaluated quantitatively rather than evaluating only the final user interface.
+
+---
+
+## 8.1 Travel-Time Prediction
+
+The DCRNN travel-time model is evaluated primarily using:
+
+### Mean Absolute Error — MAE
+
+```text
+MAE = (1/n) Σ |Actual - Predicted|
+```
+
+MAE measures the average absolute difference between predicted and actual travel time.
+
+A lower MAE indicates better performance.
+
+### Root Mean Squared Error — RMSE
+
+```text
+RMSE = √[(1/n) Σ(Actual - Predicted)²]
+```
+
+RMSE gives greater penalty to large prediction errors.
+
+A lower RMSE indicates better performance.
+
+---
+
+## 8.2 Passenger Load Prediction
+
+Passenger-load prediction can be evaluated using:
+
+- MAE
+- RMSE
+
+When passenger load is transformed into crowd classes:
+
+**Low / Medium / High**
+
+classification performance is evaluated using:
+
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion Matrix
+
+---
+
+# 9. Experimental Results
+
+Only results obtained from completed experiments should be reported here.
+
+## 9.1 Travel-Time Prediction
+
+| Model | MAE | RMSE | Evaluation Data |
+|---|---:|---:|---|
+| Baseline | To be updated | To be updated | Same test split |
+| DCRNN | To be updated | To be updated | Same test split |
+
+---
+
+## 9.2 Passenger Load Prediction
+
+| Model | MAE | RMSE | Evaluation Data |
+|---|---:|---:|---|
+| Baseline | To be updated | To be updated | Same test split |
+| ST-GCN | To be updated | To be updated | Same test split |
+
+---
+
+## 9.3 Crowd Classification
+
+| Model | Accuracy | F1-score |
+|---|---:|---:|
+| Baseline | To be updated | To be updated |
+| ST-GCN-derived crowd classes | To be updated | To be updated |
+
+> Final numbers will be added after verifying the corresponding saved experiment, data split and evaluation configuration.
+
+---
+
+# 10. Baseline Comparison
+
+A proposed model should not be evaluated only by reporting its own performance.
+
+BusSure therefore compares the proposed models against appropriate baseline approaches.
+
+For a fair comparison, models must use:
+
+- The same dataset
+- The same training/validation/test split
+- The same prediction target
+- The same evaluation metrics
+
+For example:
+
+```text
+Baseline Model
+       │
+       ├── MAE
+       └── RMSE
+
+          VS
+
+Proposed DCRNN
+       │
+       ├── MAE
+       └── RMSE
+```
+
+Similarly, crowd prediction baselines should be compared with ST-GCN under the same experimental conditions.
+
+Only baseline models that have actually been executed will be reported in the final results.
+
+---
+
+# 11. Generalization Evaluation
+
+Good performance on familiar observations does not automatically mean that a model will perform well on unseen transport conditions.
+
+BusSure therefore treats **generalization** as an experimental research question.
+
+The following evaluations are considered where supported by the dataset.
+
+## 11.1 Unseen Time Periods
+
+Train the model using earlier observations and evaluate it using later unseen observations.
+
+This tests whether the model can predict future transport behaviour rather than memorizing historical samples.
+
+## 11.2 Unseen Routes / Segments
+
+Where the dataset permits, routes or segments can be excluded during training and used during evaluation.
+
+This tests whether the learned model can transfer to parts of the network that were not directly observed during training.
+
+## 11.3 Different Operating Conditions
+
+Performance can be compared across available conditions such as:
+
+- Peak hours
+- Off-peak hours
+- Weekdays
+- Weekends
+- Different levels of congestion
+
+when the necessary information is available.
+
+## 11.4 Cross-Network Evaluation
+
+BusSure is designed so that its modelling pipeline can potentially be adapted to different public transport networks.
+
+However:
+
+> **Adaptability does not automatically mean proven cross-city accuracy.**
+
+Performance in another city/network must be experimentally evaluated before claiming cross-city generalization.
+
+---
+
+# 12. Explainability and Journey Reliability
+
+BusSure aims to provide passengers with information that is easier to understand than a single raw prediction.
+
+Instead of displaying only:
+
+```text
+Predicted Travel Time = X minutes
+```
+
+the final system aims to provide information such as:
+
+```text
+Estimated Travel Time
+Expected Arrival / Journey Range
+Crowd Level
+Journey Reliability
+Potential Delay Factors
+Alternative Journey Information
+```
+
+The travel-time and crowd predictions therefore act as inputs to a higher-level journey reliability layer.
+
+Any explanation method used in the final implementation will be documented together with its methodology.
+
+BusSure will not describe a factor as the **cause** of a delay unless causal evidence has actually been established.
+
+---
+
+# 13. Research Foundation and Related Work
+
+The following journal articles provide the main research foundation for BusSure.
+
+---
+
+## 1. Regional Bus Travel Time Prediction Using Graph Neural Networks
+
+**Year:** 2026
+
+**Area:** Bus travel-time prediction
+
+**Method:** Graph Neural Network
+
+**Relevance to BusSure:**  
+Supports graph-based modelling of spatial and temporal relationships in bus networks.
+
+**Paper:**  
+https://doi.org/10.1061/JTEPBS.TEENG-9006
+
+---
+
+## 2. Multi-attention Graph Neural Networks for City-wide Bus Travel Time Estimation Using Limited Data
+
+**Year:** 2022
+
+**Journal:** Expert Systems with Applications
+
+**Area:** Bus travel-time estimation
+
+**Method:** Spatial-temporal Graph Neural Network
+
+**Relevance to BusSure:**  
+Demonstrates how graph-based models can capture city-wide bus travel-time relationships.
+
+**Paper:**  
+https://doi.org/10.1016/j.eswa.2022.117057
+
+---
+
+## 3. BAT-Transformer: Prediction of Bus Arrival Time with Transformer Encoder for Smart Public Transportation System
+
+**Year:** 2024
+
+**Journal:** Applied Sciences
+
+**Area:** Bus arrival-time prediction
+
+**Method:** Transformer Encoder
+
+**Relevance to BusSure:**  
+Provides a temporal deep-learning reference for modelling bus arrival patterns.
+
+**Paper:**  
+https://doi.org/10.3390/app14209488
+
+---
+
+## 4. Transformer Based Arrival Time Prediction for a Target Bus Stop Using Single Stop Information
+
+**Year:** 2026
+
+**Area:** Bus arrival-time prediction
+
+**Method:** Transformer
+
+**Relevance to BusSure:**  
+Studies section-level travel-time prediction and destination-stop ETA estimation.
+
+**Paper:**  
+https://doi.org/10.9708/jksci.2026.31.03.037
+
+---
+
+## 5. Generalization Strategies for Improving Bus Travel Time Prediction Across Networks
+
+**Year:** 2024
+
+**Journal:** Journal of Urban Mobility
+
+**Area:** Bus travel-time generalization
+
+**Relevance to BusSure:**  
+Provides important research motivation for evaluating models on unseen routes, time periods and transport networks.
+
+**Paper:**  
+https://doi.org/10.1016/j.jum.2024.05.002
+
+---
+
+## 6. A Causality-Based Explainable AI Method for Bus Delay Propagation Analysis
+
+**Year:** 2025
+
+**Journal:** Communications in Transportation Research
+
+**Area:** Bus delay propagation and explainable AI
+
+**Relevance to BusSure:**  
+Supports research into how delays propagate through bus networks and how delay-related information can be explained.
+
+**Paper:**  
+https://doi.org/10.1016/j.commtr.2025.100178
+
+---
+
+## 7. Conditional Forecasting of Bus Travel Time and Passenger Occupancy with Bayesian Markov Regime-Switching Vector Autoregression
+
+**Year:** 2025
+
+**Journal:** Transportation Research Part B: Methodological
+
+**Area:** Travel time and passenger occupancy
+
+**Method:** Bayesian Markov Regime-Switching Vector Autoregression
+
+**Relevance to BusSure:**  
+Highly relevant because it jointly investigates bus travel time and passenger occupancy.
+
+**Paper:**  
+https://doi.org/10.1016/j.trb.2024.103147
+
+---
+
+## 8. Development and Evaluation of Frameworks for Real-Time Bus Passenger Occupancy Prediction
+
+**Year:** 2023
+
+**Journal:** International Journal of Transportation Science and Technology
+
+**Area:** Passenger occupancy prediction
+
+**Relevance to BusSure:**  
+Provides a direct methodological reference for predicting passenger occupancy at future bus stops.
+
+**Paper:**  
+https://doi.org/10.1016/j.ijtst.2022.03.005
+
+---
+
+## 9. TMS-GNN: Traffic-Aware Multistep Graph Neural Network for Bus Passenger Flow Prediction
+
+**Year:** 2025
+
+**Journal:** Transportation Research Part C: Emerging Technologies
+
+**Area:** Passenger-flow forecasting
+
+**Method:** Graph Neural Network
+
+**Relevance to BusSure:**  
+Supports spatial-temporal graph modelling of passenger-flow behaviour.
+
+**Paper:**  
+https://doi.org/10.1016/j.trc.2025.105107
+
+---
+
+## 10. Origin-Destination Demand Prediction of Public Transit Using Graph Convolutional Neural Network
+
+**Year:** 2024
+
+**Journal:** Case Studies on Transport Policy
+
+**Area:** Public transport passenger-demand prediction
+
+**Method:** Graph Convolutional Neural Network
+
+**Relevance to BusSure:**  
+Demonstrates graph-based modelling of spatial relationships for public transport passenger-demand prediction.
+
+**Paper:**  
+https://doi.org/10.1016/j.cstp.2024.101230
+
+---
+
+# 14. Relationship Between Existing Research and BusSure
+
+The research papers above provide the scientific foundation for different parts of BusSure.
+
+| Research Area | Related Papers |
+|---|---|
+| Travel-time / ETA prediction | Papers 1–4 |
+| Generalization | Paper 5 |
+| Delay / explainability | Paper 6 |
+| Travel time + passenger occupancy | Paper 7 |
+| Passenger occupancy | Paper 8 |
+| Passenger flow / demand | Papers 9–10 |
+
+These papers are **research references**.
+
+They do not imply that BusSure implements every model described in these studies.
+
+The current primary BusSure models are:
+
+```text
+Travel-Time Prediction → DCRNN
+
+Passenger Crowd Prediction → ST-GCN
+```
+
+The literature is used to:
+
+- understand existing approaches,
+- identify research gaps,
+- justify modelling choices,
+- design experiments,
+- and establish suitable comparisons.
+
+---
+
+# 15. Reproducibility
+
+An important objective of the project is to make the experiments reproducible.
+
+A researcher should be able to understand:
+
+```text
+Dataset
+   ↓
+Preprocessing
+   ↓
+Graph Construction
+   ↓
+Train / Validation / Test Split
+   ↓
+Model Configuration
+   ↓
+Training
+   ↓
+Evaluation
+   ↓
+Results
+```
+
+The repository will therefore provide the relevant implementation files as development progresses.
+
+Recommended repository structure:
+
+```text
+Busai/
+│
+├── README.md
+├── requirements.txt
+│
+├── data/
+│   └── README.md
+│
+├── preprocessing/
+│   ├── travel_time_preprocessing.py
+│   └── crowd_preprocessing.py
+│
+├── models/
+│   ├── dcrnn/
+│   └── stgcn/
+│
+├── training/
+│   ├── train_dcrnn.py
+│   └── train_stgcn.py
+│
+├── evaluation/
+│   ├── evaluate_travel_time.py
+│   └── evaluate_crowd.py
+│
+├── configs/
+│   ├── dcrnn_config.yaml
+│   └── stgcn_config.yaml
+│
+└── results/
+    ├── travel_time/
+    └── crowd/
+```
+
+For each final experiment, the following information should be documented:
+
+- Dataset source
+- Dataset version
+- Features used
+- Target variable
+- Data-cleaning procedure
+- Graph-construction method
+- Train/validation/test split
+- Random seed, where applicable
+- Model architecture
+- Hyperparameters
+- Batch size
+- Number of epochs
+- Learning rate
+- Optimizer
+- Evaluation metrics
+- Final results
+
+---
+
+# 16. Limitations
+
+The current BusSure research has several limitations.
+
+1. The models are currently evaluated using specific public transport datasets. Performance on these datasets does not automatically guarantee the same accuracy in every city.
+
+2. Public transport datasets differ in their available features, data quality, stop structure and temporal resolution.
+
+3. Passenger crowd prediction depends on the availability and quality of boarding, alighting and passenger-load information.
+
+4. Crowd categories such as **Low, Medium and High** depend on the thresholds selected for the experiment.
+
+5. Unusual events such as accidents, road closures, strikes, extreme weather or large public events may not be sufficiently represented in historical training data.
+
+6. Cross-city generalization requires dedicated evaluation on additional transport networks.
+
+7. Real-time deployment would depend on the availability and reliability of live GPS/AVL and passenger information.
+
+---
+
+# Project Goal
+
+BusSure aims to move public transport information beyond:
+
+> **“When will my bus arrive?”**
+
+toward:
+
+> **“How long is my journey likely to take, how crowded may the bus be, how reliable is that information, and what can help me make a better journey decision?”**
