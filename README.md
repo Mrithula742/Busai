@@ -554,194 +554,220 @@ BusSure will not describe a factor as the **cause** of a delay unless causal evi
 
 # 13. Research Foundation and Related Work
 
-The following journal articles provide the main research foundation for BusSure.
+The following peer-reviewed journal/research articles provide the main research foundation for BusSure. The selected studies cover bus travel-time prediction, graph-based spatio-temporal modelling, passenger-flow and occupancy prediction, model generalization, and explainable bus-delay analysis.
 
 ---
 
-## 1. Regional Bus Travel Time Prediction Using Graph Neural Networks
+## 1. Adaptive Physics-Informed Machine Learning for Bus Travel Time Prediction: Solving the Peak Prediction Problem
 
-**Year:** 2026
-
-**Area:** Bus travel-time prediction
-
-**Method:** Graph Neural Network
+**Year:** 2026  
+**Journal:** Applied Soft Computing  
+**Type:** Journal Research Article  
+**Area:** Bus travel-time prediction  
+**Method:** Physics-Informed LSTM (Phy-LSTM) with an adaptive Generalist-Specialist framework
 
 **Relevance to BusSure:**  
-Supports graph-based modelling of spatial and temporal relationships in bus networks.
+Provides a recent reference for bus travel-time prediction under both normal and rare peak-delay conditions. The study is particularly relevant because it was evaluated using real GPS observations collected under heterogeneous Indian traffic conditions.
 
-**Paper:**  
-https://doi.org/10.1061/JTEPBS.TEENG-9006
+**DOI:**  
+https://doi.org/10.1016/j.asoc.2026.115435
+
+**Open-access article:**  
+https://www.sciencedirect.com/science/article/pii/S1568494626008835
 
 ---
 
-## 2. Multi-attention Graph Neural Networks for City-wide Bus Travel Time Estimation Using Limited Data
+## 2. Short-Term Bus Passenger Flow Prediction Based on Graph Diffusion Convolutional Recurrent Neural Network
 
-**Year:** 2022
-
-**Journal:** Expert Systems with Applications
-
-**Area:** Bus travel-time estimation
-
-**Method:** Spatial-temporal Graph Neural Network
+**Year:** 2023  
+**Journal:** Applied Sciences  
+**Type:** Journal Research Article  
+**Area:** Bus passenger-flow prediction  
+**Method:** Diffusion Convolutional Recurrent Neural Network (DCRNN)
 
 **Relevance to BusSure:**  
-Demonstrates how graph-based models can capture city-wide bus travel-time relationships.
+Demonstrates how diffusion graph convolution and recurrent neural networks can jointly capture spatial and temporal dependencies in a bus network. It provides an important methodological reference for graph-based spatio-temporal modelling in BusSure.
 
-**Paper:**  
-https://doi.org/10.1016/j.eswa.2022.117057
+**DOI:**  
+https://doi.org/10.3390/app13084910
+
+**Open-access article and PDF:**  
+https://www.mdpi.com/2076-3417/13/8/4910
 
 ---
 
 ## 3. BAT-Transformer: Prediction of Bus Arrival Time with Transformer Encoder for Smart Public Transportation System
 
-**Year:** 2024
-
-**Journal:** Applied Sciences
-
-**Area:** Bus arrival-time prediction
-
-**Method:** Transformer Encoder
+**Year:** 2024  
+**Journal:** Applied Sciences  
+**Type:** Journal Research Article  
+**Area:** Bus arrival-time prediction  
+**Method:** Transformer Encoder with multi-head attention
 
 **Relevance to BusSure:**  
-Provides a temporal deep-learning reference for modelling bus arrival patterns.
+Provides a deep-learning reference for modelling temporal dependencies in bus arrival-time data and demonstrates the use of attention-based models for improving arrival-time prediction.
 
-**Paper:**  
+**DOI:**  
 https://doi.org/10.3390/app14209488
+
+**Open-access article and PDF:**  
+https://www.mdpi.com/2076-3417/14/20/9488
 
 ---
 
 ## 4. Transformer Based Arrival Time Prediction for a Target Bus Stop Using Single Stop Information
 
-**Year:** 2026
-
-**Area:** Bus arrival-time prediction
-
-**Method:** Transformer
+**Year:** 2026  
+**Journal:** Journal of The Korea Society of Computer and Information  
+**Type:** Journal Research Article  
+**Area:** Bus arrival-time / destination ETA prediction  
+**Method:** Transformer Encoder
 
 **Relevance to BusSure:**  
-Studies section-level travel-time prediction and destination-stop ETA estimation.
+Predicts travel time for individual sections between bus stops and calculates destination-stop ETA by accumulating the predicted section travel times. This is closely related to BusSure's journey and stop-to-stop travel-time prediction objective.
 
-**Paper:**  
+**DOI:**  
 https://doi.org/10.9708/jksci.2026.31.03.037
+
+**Article page:**  
+https://journal.kci.go.kr/jksci/archive/articleView?artiId=ART003317581
+
+**Direct PDF:**  
+https://journal.kci.go.kr/jksci/archive/articlePdf?artiId=ART003317581
 
 ---
 
 ## 5. Generalization Strategies for Improving Bus Travel Time Prediction Across Networks
 
-**Year:** 2024
-
-**Journal:** Journal of Urban Mobility
-
-**Area:** Bus travel-time generalization
+**Year:** 2024  
+**Journal:** Journal of Urban Management  
+**Type:** Journal Research Article  
+**Area:** Bus travel-time prediction and model generalization
 
 **Relevance to BusSure:**  
-Provides important research motivation for evaluating models on unseen routes, time periods and transport networks.
+Investigates whether bus travel-time models can generalize to unseen routes and different public-transport networks. It uses standardized open transport information including GTFS and GTFS-Realtime and directly supports BusSure's generalization evaluation.
 
-**Paper:**  
+**DOI:**  
 https://doi.org/10.1016/j.jum.2024.05.002
+
+**Open-access article:**  
+https://www.sciencedirect.com/science/article/pii/S222658562400061X
 
 ---
 
 ## 6. A Causality-Based Explainable AI Method for Bus Delay Propagation Analysis
 
-**Year:** 2025
-
-**Journal:** Communications in Transportation Research
-
-**Area:** Bus delay propagation and explainable AI
+**Year:** 2025  
+**Journal:** Communications in Transportation Research  
+**Type:** Journal Research Article  
+**Area:** Bus delay propagation and Explainable AI  
+**Method:** Causal discovery and causality-aware Shapley-value analysis
 
 **Relevance to BusSure:**  
-Supports research into how delays propagate through bus networks and how delay-related information can be explained.
+Provides a research foundation for understanding how delays propagate through connected bus stops and how operational, calendar, and weather-related factors contribute to delay. It supports the explainability and journey-reliability components of BusSure.
 
-**Paper:**  
+**DOI:**  
 https://doi.org/10.1016/j.commtr.2025.100178
+
+**Open-access article + downloadable PDF:**  
+https://www.sciopen.com/article/10.1016/j.commtr.2025.100178?issn=2097-5023
 
 ---
 
 ## 7. Conditional Forecasting of Bus Travel Time and Passenger Occupancy with Bayesian Markov Regime-Switching Vector Autoregression
 
-**Year:** 2025
-
-**Journal:** Transportation Research Part B: Methodological
-
-**Area:** Travel time and passenger occupancy
-
+**Year:** 2025  
+**Journal:** Transportation Research Part B: Methodological  
+**Type:** Journal Research Article  
+**Area:** Bus travel-time and passenger-occupancy forecasting  
 **Method:** Bayesian Markov Regime-Switching Vector Autoregression
 
 **Relevance to BusSure:**  
-Highly relevant because it jointly investigates bus travel time and passenger occupancy.
+This study is particularly relevant because it jointly investigates two major types of information considered by BusSure: bus travel time and passenger occupancy. It also considers prediction uncertainty rather than providing only deterministic point estimates.
 
-**Paper:**  
+**DOI:**  
 https://doi.org/10.1016/j.trb.2024.103147
+
+**Open-access publisher article:**  
+https://www.sciencedirect.com/science/article/pii/S0191261524002716
 
 ---
 
 ## 8. Development and Evaluation of Frameworks for Real-Time Bus Passenger Occupancy Prediction
 
-**Year:** 2023
-
-**Journal:** International Journal of Transportation Science and Technology
-
-**Area:** Passenger occupancy prediction
+**Year:** 2023  
+**Journal:** International Journal of Transportation Science and Technology  
+**Type:** Journal Research Article  
+**Area:** Passenger occupancy prediction  
+**Methods:** Linear Regression and Random Forest
 
 **Relevance to BusSure:**  
-Provides a direct methodological reference for predicting passenger occupancy at future bus stops.
+Provides a direct research foundation for predicting passenger occupancy of individual buses at future stops using operational information, Automatic Passenger Counter data, and weather information.
 
-**Paper:**  
+**DOI:**  
 https://doi.org/10.1016/j.ijtst.2022.03.005
 
+**Open-access article:**  
+https://www.sciencedirect.com/science/article/pii/S2046043022000296
+
 ---
 
-## 9. TMS-GNN: Traffic-Aware Multistep Graph Neural Network for Bus Passenger Flow Prediction
+## 9. Short-Term Passenger Flow Prediction Using a Bus Network Graph Convolutional Long Short-Term Memory Neural Network Model
 
-**Year:** 2025
-
-**Journal:** Transportation Research Part C: Emerging Technologies
-
-**Area:** Passenger-flow forecasting
-
-**Method:** Graph Neural Network
+**Year:** 2023  
+**Journal:** Transportation Research Record  
+**Type:** Journal Research Article  
+**Area:** Bus passenger-flow prediction  
+**Method:** Bus Network Graph Convolutional LSTM (BNG-ConvLSTM)
 
 **Relevance to BusSure:**  
-Supports spatial-temporal graph modelling of passenger-flow behaviour.
+Closely supports BusSure's crowd-prediction research because the bus network is represented as a graph and the model learns both spatial relationships among stops and temporal passenger-flow patterns.
 
-**Paper:**  
+**DOI:**  
+https://doi.org/10.1177/03611981221112673
+
+**Open-access full article:**  
+https://journals.sagepub.com/doi/full/10.1177/03611981221112673
+
+**PDF:**  
+https://journals.sagepub.com/doi/pdf/10.1177/03611981221112673
+
+---
+
+## 10. TMS-GNN: Traffic-Aware Multistep Graph Neural Network for Bus Passenger Flow Prediction
+
+**Year:** 2025  
+**Journal:** Transportation Research Part C: Emerging Technologies  
+**Type:** Journal Research Article  
+**Area:** Bus passenger-flow forecasting  
+**Method:** Traffic-Aware Multistep Graph Neural Network (TMS-GNN)
+
+**Relevance to BusSure:**  
+Supports BusSure's spatio-temporal passenger crowd modelling because it represents relationships among bus stops while considering temporal passenger-flow behaviour and traffic information.
+
+**DOI:**  
 https://doi.org/10.1016/j.trc.2025.105107
 
----
-
-## 10. Origin-Destination Demand Prediction of Public Transit Using Graph Convolutional Neural Network
-
-**Year:** 2024
-
-**Journal:** Case Studies on Transport Policy
-
-**Area:** Public transport passenger-demand prediction
-
-**Method:** Graph Convolutional Neural Network
-
-**Relevance to BusSure:**  
-Demonstrates graph-based modelling of spatial relationships for public transport passenger-demand prediction.
-
-**Paper:**  
-https://doi.org/10.1016/j.cstp.2024.101230
-
----
+**Free final published version (CC BY):**  
+https://research.tudelft.nl/en/publications/tms-gnn-traffic-aware-multistep-graph-neural-network-for-bus-pass/---
 
 # 14. Relationship Between Existing Research and BusSure
 
-The research papers above provide the scientific foundation for different parts of BusSure.
+The research papers above provide the scientific foundation for different components of BusSure.
 
 | Research Area | Related Papers |
 |---|---|
-| Travel-time / ETA prediction | Papers 1–4 |
-| Generalization | Paper 5 |
-| Delay / explainability | Paper 6 |
+| Bus travel-time / ETA prediction | Papers 1, 3–4 |
+| Graph-based and spatio-temporal modelling | Papers 2, 9–10 |
+| Model generalization across transport networks | Paper 5 |
+| Bus delay propagation and explainability | Paper 6 |
 | Travel time + passenger occupancy | Paper 7 |
-| Passenger occupancy | Paper 8 |
-| Passenger flow / demand | Papers 9–10 |
+| Passenger occupancy prediction | Papers 7–8 |
+| Passenger flow / crowd-related prediction | Papers 2, 9–10 |
 
 These papers are **research references**.
+
+The research papers above provide the scientific foundation for different components of BusSure.
 
 They do not imply that BusSure implements every model described in these studies.
 
