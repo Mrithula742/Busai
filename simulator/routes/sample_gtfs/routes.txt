@@ -1,0 +1,4 @@
+route_id,agency_id,route_short_name,route_long_name,route_type
+SAMPLE_R1,SAMPLE_AGENCY,SAMPLE-A,SAMPLE West to East,3
+SAMPLE_R2,SAMPLE_AGENCY,SAMPLE-B,SAMPLE South to North,3
+SAMPLE_R3,SAMPLE_AGENCY,SAMPLE-C,SAMPLE West to North,3

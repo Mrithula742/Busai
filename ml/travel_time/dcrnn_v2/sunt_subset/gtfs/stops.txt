@@ -1,0 +1,25 @@
+stop_id,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station
+45832983,R. Nossa Sra. do Carmo 34 - Sete de Abril Salvador - BA 41385-040 Brasil,,-12.9123811721802,-38.4298629760742,,,0,
+44782884,R. Nossa Sra. do Carmo 940-944 - Sete de Abril Salvador - BA Brasil,,-12.9102993011475,-38.4279403686523,,,0,
+47566312_S,R. Nossa Sra. do Carmo - Sete de Abril Salvador - BA Brasil,TP SETE DE ABRIL,-12.910605430603,-38.426212310791,,,1,
+47566312,R. Nossa Sra. do Carmo - Sete de Abril Salvador - BA Brasil,TP SETE DE ABRIL,-12.910605430603,-38.426212310791,,,0,47566312_S
+45834097_S,Praça São Benedito 23 - Nova Brasília Salvador - BA 41350-150 Brasil,TP NOVA BRASILIA,-12.915771484375,-38.4088325500488,,,1,
+45834097,Praça São Benedito 23 - Nova Brasília Salvador - BA 41350-150 Brasil,TP NOVA BRASILIA,-12.915771484375,-38.4088325500488,,,0,45834097_S
+44782442,Travessa Nova Brasília 1-37 - Nova Brasília Salvador - BA Brasil,,-12.9175491333008,-38.4084815979004,,,0,
+47566681,Av. Aliomar Baleeiro 404 - Nova Brasília Salvador - BA 41388-005 Brasil,,-12.9188833236694,-38.4087333679199,,,0,
+44783270,Av. Aliomar Baleeiro 423 - São Marcos Salvador - BA 41350-275 Brasil,,-12.9190769195557,-38.4114112854004,,,0,
+47568385,Av. Aliomar Baleeiro 370 - Nova Brasília Salvador - BA 41388-005 Brasil,,-12.918848991394,-38.4129638671875,,,0,
+44784196,001460 - Aliomar Baleeiro 6101-6195 - Nova Brasília Salvador - BA 41350-275 Brasil,,-12.9179821014404,-38.4142074584961,,,0,
+44784333,001233 - Aliomar Baleeiro 5898-6040 - Canabrava Salvador - BA 41350-275 Brasil,,-12.9166164398193,-38.4154472351074,,,0,
+44782447,Avenida Aliomar Baleeiro 5557-5717 - Jardim Nova Esperanca Salvador - BA 41370-040 Brasil,,-12.9170684814453,-38.4185447692871,,,0,
+45833333,Av. Aliomar Baleeiro 5257-5321 - São Marcos Salvador - BA Brasil,,-12.9169054031372,-38.4212455749512,,,0,
+44784053,Rua Simone Barradas 160 - Jardim Nova Esperanca Salvador - BA 41370-170 Brasil,,-12.9165754318237,-38.4219245910645,,,0,
+45834122,R. Simone Barradas 139 - Jardim Nova Esperanca Salvador - BA 41370-030 Brasil,,-12.9150199890137,-38.421558380127,,,0,
+45834116,R. Simone Barradas 49 - Novo Marotinho Salvador - BA 41370-030 Brasil,,-12.9102573394775,-38.418815612793,,,0,
+44782440_S,Av. Simone Barradas 1-51 - Jardim Nova Esperanca Salvador - BA 41370-055 Brasil,,-12.9093828201294,-38.4182243347168,,,1,
+44782440,Av. Simone Barradas 1-51 - Jardim Nova Esperanca Salvador - BA 41370-055 Brasil,,-12.9093828201294,-38.4182243347168,,,0,44782440_S
+44784252,Rua Simone Barradas S/N - Jardim Nova Esperanca Salvador - BA 41370-120 Brasil,,-12.9123573303223,-38.4209098815918,,,0,
+44784251,Rua Simone Barradas S/N - Jardim Nova Esperanca Salvador - BA 41388-125 Brasil,,-12.9160709381104,-38.4218902587891,,,0,
+45833335,Condomínio Edifício Maison Des Arcs - Pituba Salvador - BA Brasil,,-12.9155263900757,-38.4254264831543,,,0,
+125960548,4367 - Av. Aliomar Baleeiro 4313 - São Marcos Salvador - BA Brasil,,-12.9167375564575,-38.4291076660156,,,0,
+44782886,Av. Aliomar Baleeiro 4143-4169 - Sete de Abril Salvador - BA 41385-160 Brasil,,-12.9162712097168,-38.4306106567383,,,0,

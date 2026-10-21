@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "features": ["travel_time_z", "observed", "hour_sin", "hour_cos", "weekday_sin", "weekday_cos"],
+  "required_observation_columns": ["trip_id", "from_stop_id", "to_stop_id", "departed_at", "arrived_at"],
+  "target": "Mean measured segment travel time in seconds, grouped by completion time into the next UTC bin",
+  "travel_time_definition": "arrived_at minus departed_at; departure at upstream stop to arrival at downstream stop; excludes upstream dwell",
+  "node_definition": "Directed (route_id, from_stop_id, to_stop_id) segment; route_id obtained from GTFS trip_id",
+  "aggregation": "Mean of completed traversals in each bin; bins are [start, end)",
+  "missing_inputs": "Causal forward fill per segment; training median before first measurement; observed=0 for missing bins",
+  "missing_targets": "Masked out of loss and metrics; never filled for supervision",
+  "scaling": "Per-node mean and population standard deviation of observed TRAIN bin means only; standard deviation below 1e-6 becomes 1",
+  "time_features": "UTC bin-start hour including minutes divided by 24; weekday Monday=0 divided by 7; sin/cos with 2*pi",
+  "input_layout": "batch, sequence_length, nodes, features",
+  "output_layout": "batch, prediction_horizon, nodes",
+  "availability": "A bin is available only after its end; predictions require an as_of timestamp aligned to a bin boundary",
+  "postprocessing": "Inverse scale, then clip negative travel-time estimates to zero",
+  "eta_scope": "Segment traversal duration; not waiting time, whole-journey ETA, or remaining time for a bus already partway through a segment"
+}

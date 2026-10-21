@@ -1,0 +1,38 @@
+{
+  "best_epoch": 3,
+  "epochs_run": 3,
+  "validation": {
+    "model": {
+      "MAE_seconds": 8.413270808258558,
+      "RMSE_seconds": 27.186378416450196,
+      "R2": 0.15612075939328773,
+      "WAPE_percent": 27.380955130082924,
+      "observed_target_count": 913
+    },
+    "persistence": {
+      "MAE_seconds": 12.450164289359586,
+      "RMSE_seconds": 38.218122180957295,
+      "R2": -0.667693657257737,
+      "WAPE_percent": 40.519008307029296,
+      "observed_target_count": 913
+    }
+  },
+  "test": {
+    "model": {
+      "MAE_seconds": 6.751775877816336,
+      "RMSE_seconds": 13.510195561191404,
+      "R2": 0.40470332104811924,
+      "WAPE_percent": 22.859417172766392,
+      "observed_target_count": 910
+    },
+    "persistence": {
+      "MAE_seconds": 9.623076923076923,
+      "RMSE_seconds": 18.870351901299532,
+      "R2": -0.16136888645874237,
+      "WAPE_percent": 32.58075117584946,
+      "observed_target_count": 910
+    }
+  },
+  "data_kind": "observed",
+  "quality_note": "Compare held-out model error with persistence; training success alone does not establish ETA quality."
+}

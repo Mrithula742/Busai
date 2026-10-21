@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusSure — Bus GPS Device</title>
+  <style>
+    body{font:16px system-ui;margin:0;background:#edf4f5;color:#132d36}main{max-width:440px;margin:auto;padding:24px}label{display:block;margin-top:16px}input,button{box-sizing:border-box;width:100%;font:inherit;padding:12px;border-radius:8px;border:1px solid #82969e}button{margin-top:16px;background:#125c66;color:white}button:disabled{opacity:.45}dl{background:white;padding:18px;border-radius:12px}dt{font-weight:600;margin-top:12px}dd{margin:4px 0;overflow-wrap:anywhere}.note{line-height:1.5}#status{font-weight:600}
+  </style>
+</head>
+<body><main>
+  <h1>Bus GPS Device</h1>
+  <p class="note">REAL PHONE GPS prototype. Sends this device’s actual location, not an official operator feed. Keep this page open and the screen awake.</p>
+  <label for="bus">Bus ID</label><input id="bus" value="PHONE_001" maxlength="100" required>
+  <label for="route">Route ID</label><input id="route" placeholder="GTFS route_id or prototype ID" maxlength="100" required>
+  <label for="trip">Trip ID</label><input id="trip" placeholder="GTFS trip_id or prototype ID" maxlength="100" required>
+  <button id="start">Start Tracking</button><button id="stop" disabled>Stop Tracking</button>
+  <dl aria-live="polite"><dt>Permission</dt><dd id="permission">Not requested</dd><dt>Latitude</dt><dd id="lat">—</dd><dt>Longitude</dt><dd id="lon">—</dd><dt>Accuracy (metres)</dt><dd id="accuracy">—</dd><dt>GPS quality</dt><dd id="quality">Waiting for GPS</dd><dt>Speed (m/s)</dt><dd id="speed">Unavailable</dd><dt>Heading (degrees)</dt><dd id="heading">Unavailable</dd><dt>Last GPS fix</dt><dd id="fix">—</dd><dt>Last successful update</dt><dd id="updated">—</dd><dt>Successful updates</dt><dd id="count">0</dd><dt>Connection status</dt><dd id="status">Stopped</dd></dl>
+  <p class="note">Requires location permission and HTTPS on a phone. Open this page through the backend’s <code>/gps-device</code> URL. Unknown route/trip IDs remain unverified.</p>
+  <script>
+    const el = id => document.getElementById(id);
+    let watch = null, timer = null, latest = null, lastSent = 0, active = false, generation = 0, pending = null, identity = null, count = 0, retryAt = 0, failures = 0;
+    const weakAccuracyMeters = 100;
+    function stop(message = 'Stopped') {
+      active = false; generation++;
+      if (watch !== null) navigator.geolocation.clearWatch(watch);
+      clearInterval(timer); pending?.controller.abort(); pending = null; watch = null; timer = null;
+      el('start').disabled = false; el('stop').disabled = true;
+      for (const id of ['bus','route','trip']) el(id).disabled = false;
+      el('status').textContent = message;
+    }
+    async function send() {
+      if (!active || pending || !latest || Date.now() < retryAt) return;
+      if (Date.now() - latest.timestamp > 15000) { el('status').textContent = 'Waiting for a fresh GPS fix; old coordinates are not resent'; return; }
+      if (latest.timestamp <= lastSent) return;
+      const session = generation, position = latest, c = position.coords;
+      const request = {controller:new AbortController(), session}; pending = request;
+      const timeout = setTimeout(() => request.controller.abort(), 7000);
+      try {
+        const response = await fetch('/api/buses/location', {method:'POST', headers:{'Content-Type':'application/json'}, signal:request.controller.signal, body:JSON.stringify({...identity, latitude:c.latitude, longitude:c.longitude, speed:Number.isFinite(c.speed) && c.speed >= 0 ? c.speed : null, heading:Number.isFinite(c.heading) && c.heading >= 0 && c.heading < 360 ? c.heading : null, accuracy:c.accuracy, timestamp:new Date(position.timestamp).toISOString(), source:'REAL_PHONE_GPS', status:c.speed === 0 ? 'STOPPED' : 'MOVING'})});
+        if (session !== generation) return;
+        if (response.status === 409 || response.status === 422) {
+          const reason = await response.text();
+          if (session === generation) stop(`Update rejected (${response.status}): ${reason}. Check IDs and device clock before restarting.`);
+          return;
+        }
+        if (!response.ok) throw new Error(`Backend ${response.status}: ${await response.text()}`);
+        const bus = await response.json();
+        if (session !== generation) return;
+        lastSent = position.timestamp;
+        failures = 0; retryAt = 0; count++; el('count').textContent = String(count);
+        el('updated').textContent = new Date().toLocaleTimeString();
+        el('status').textContent = `Connected — REAL PHONE GPS (${bus.route_verified ? 'route/trip matched to ' + bus.route_data_source : 'route/trip unverified'})`;
+      } catch (error) {
+        if (session === generation) {
+          const delay = Math.min(30000, 3000 * 2 ** Math.min(failures++, 4));
+          retryAt = Date.now() + delay;
+          el('status').textContent = `Network failure; retry in ${delay / 1000}s: ${error.message}`;
+        }
+      }
+      finally { clearTimeout(timeout); if (pending === request) pending = null; }
+    }
+    el('start').onclick = () => {
+      if (active) return;
+      if (location.protocol === 'file:') { el('status').textContent = 'Open this page from the backend /gps-device URL, not as a local file.'; return; }
+      if (!window.isSecureContext || !navigator.geolocation) { el('status').textContent = 'Geolocation requires trusted HTTPS on your phone (localhost works on the Mac).'; return; }
+      identity = {bus_id:el('bus').value.trim(), route_id:el('route').value.trim(), trip_id:el('trip').value.trim()};
+      if (Object.values(identity).some(value => !value)) { el('status').textContent = 'Enter Bus ID, Route ID and Trip ID.'; return; }
+      active = true; generation++; latest = null; lastSent = 0; count = 0; failures = 0; retryAt = 0;
+      el('count').textContent = '0'; el('permission').textContent = 'Requesting permission';
+      const session = generation;
+      el('start').disabled = true; el('stop').disabled = false;
+      for (const id of ['bus','route','trip']) el(id).disabled = true;
+      el('status').textContent = 'Requesting real GPS permission…';
+      watch = navigator.geolocation.watchPosition(position => {
+        if (!active || session !== generation) return;
+        const c = position.coords;
+        if (!Number.isFinite(c.latitude) || !Number.isFinite(c.longitude) || Math.abs(c.latitude) > 90 || Math.abs(c.longitude) > 180 || !Number.isFinite(c.accuracy) || c.accuracy < 0 || !Number.isFinite(position.timestamp)) {
+          el('quality').textContent = 'Invalid GPS fix rejected'; return;
+        }
+        latest = position;
+        el('permission').textContent = 'Granted';
+        el('accuracy').textContent = c.accuracy.toFixed(1);
+        el('heading').textContent = Number.isFinite(c.heading) ? c.heading.toFixed(1) : 'Unavailable';
+        el('quality').textContent = c.accuracy > weakAccuracyMeters ? 'Weak accuracy — position remains approximate; stop progression is withheld' : 'GPS fix available';
+        el('lat').textContent = position.coords.latitude.toFixed(6);
+        el('lon').textContent = position.coords.longitude.toFixed(6);
+        el('speed').textContent = position.coords.speed === null ? 'Unavailable' : position.coords.speed.toFixed(2);
+        el('fix').textContent = new Date(position.timestamp).toLocaleTimeString();
+      }, error => {
+        if (!active || session !== generation) return;
+        latest = null;
+        if (error.code === 1) { el('permission').textContent = 'Denied'; stop('Location permission denied. Enable permission and try again.'); }
+        else { el('quality').textContent = 'GPS unavailable'; el('status').textContent = `GPS unavailable: ${error.message}; waiting for a fresh fix`; }
+      }, {enableHighAccuracy:true, maximumAge:0, timeout:15000});
+      timer = setInterval(send, 3000);
+    };
+    el('stop').onclick = () => stop();
+    window.addEventListener('pagehide', () => stop());
+    if (navigator.permissions?.query) {
+      navigator.permissions.query({name:'geolocation'}).then(permission => {
+        const refresh = () => {
+          el('permission').textContent = permission.state;
+          if (permission.state === 'denied' && active) stop('Location permission revoked');
+        };
+        refresh(); permission.onchange = refresh;
+      }).catch(() => {}); // Safari/device support varies; GPS callbacks remain authoritative.
+    }
+  </script>
+</main></body></html>

@@ -1,0 +1,55 @@
+{
+  "data_source": "SYNTHETIC",
+  "seed": 42,
+  "days": 35,
+  "training_days": 28,
+  "observations": 10080,
+  "warning": "Generated data and approximate anchors. No real service or prediction accuracy claims.",
+  "routes": [
+    {
+      "route_id": "SYN_A",
+      "stops": [
+        "MAD",
+        "VEL",
+        "GUI",
+        "TNG",
+        "CEN"
+      ],
+      "minutes": [
+        8,
+        12,
+        10,
+        14
+      ],
+      "headway": 12
+    },
+    {
+      "route_id": "SYN_B",
+      "stops": [
+        "MAD",
+        "GUI",
+        "CEN"
+      ],
+      "minutes": [
+        18,
+        25
+      ],
+      "headway": 20
+    },
+    {
+      "route_id": "SYN_C",
+      "stops": [
+        "CEN",
+        "GUI",
+        "TAM",
+        "KAN"
+      ],
+      "minutes": [
+        25,
+        30,
+        65
+      ],
+      "headway": 30
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+import { test, expect } from '@playwright/test';
+test('demo routes highlight and simulated buses move and pause', async ({page})=>{
+  const errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');
+  await page.getByRole('button',{name:/Start journey/}).click();
+  await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name:'AI Journey',exact:true}).click();
+  await page.getByText('Fictional presentation scenarios',{exact:true}).click();
+  const demo=page.getByRole('region',{name:'Fictional Chennai journey demo'});
+  await demo.getByRole('button',{name:'Suggest my journey →'}).click();
+  await expect(demo.locator('.demo-route')).toHaveCount(2);
+  await expect(demo.locator('.demo-map .leaflet-container')).toBeVisible();
+  const circles=demo.locator('.demo-map circle');
+  const paths=demo.locator('.demo-map path.leaflet-interactive');
+  await expect(paths).toHaveCount(6);
+  const bus=paths.last();
+  const before=await bus.getAttribute('d');
+  await expect.poll(()=>bus.getAttribute('d')).not.toBe(before);
+  await demo.getByRole('button',{name:'Highlight on map'}).click();
+  await expect(demo.locator('.demo-route').nth(1).getByRole('button')).toHaveAttribute('aria-pressed','true');
+  await demo.getByRole('button',{name:'Pause simulated buses'}).click();
+  await expect(demo.getByRole('button',{name:'Resume simulated buses'})).toBeVisible();
+  expect(errors).toEqual([]);
+});

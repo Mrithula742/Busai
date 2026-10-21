@@ -1,0 +1,50 @@
+{
+  "label": "SYNTHETIC ONLY",
+  "gtfs_directory": "../../../datasets/synthetic_chennai",
+  "interval_seconds": 0.5,
+  "dwell_seconds": 6,
+  "buses": [
+    {
+      "bus_id": "SIM_SYN_A",
+      "route_id": "SYN_A",
+      "trip_id": "SYN_A_360",
+      "speed_mps": 60,
+      "start_progress": 0.1
+    },
+    {
+      "bus_id": "SIM_SYN_A_R",
+      "route_id": "SYN_A_R",
+      "trip_id": "SYN_A_R_360",
+      "speed_mps": 60,
+      "start_progress": 0.1
+    },
+    {
+      "bus_id": "SIM_SYN_B",
+      "route_id": "SYN_B",
+      "trip_id": "SYN_B_360",
+      "speed_mps": 60,
+      "start_progress": 0.1
+    },
+    {
+      "bus_id": "SIM_SYN_B_R",
+      "route_id": "SYN_B_R",
+      "trip_id": "SYN_B_R_360",
+      "speed_mps": 60,
+      "start_progress": 0.1
+    },
+    {
+      "bus_id": "SIM_SYN_C",
+      "route_id": "SYN_C",
+      "trip_id": "SYN_C_360",
+      "speed_mps": 60,
+      "start_progress": 0.1
+    },
+    {
+      "bus_id": "SIM_SYN_C_R",
+      "route_id": "SYN_C_R",
+      "trip_id": "SYN_C_R_360",
+      "speed_mps": 60,
+      "start_progress": 0.1
+    }
+  ]
+}

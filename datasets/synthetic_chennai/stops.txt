@@ -1,0 +1,8 @@
+stop_id,stop_name,stop_lat,stop_lon
+MAD,Madipakkam,12.965,80.198
+VEL,Velachery,12.976,80.221
+GUI,Guindy,13.007,80.211
+TNG,T Nagar,13.041,80.234
+CEN,Chennai Central,13.083,80.275
+TAM,Tambaram,12.925,80.127
+KAN,Kanchipuram,12.835,79.704

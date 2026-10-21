@@ -1,0 +1,26 @@
+{
+  "verification_scope": "Historical synthetic verification before SUNT integration; current real-data development results are in sunt_dev_artifacts/sunt_experiment.json",
+  "verification_kind": "synthetic software test only; not real-data ETA validation",
+  "rows": 288,
+  "epochs": 3,
+  "fresh_process_training_and_inference_passed": true,
+  "fresh_process_sample_reproduced": true,
+  "same_seed_repeat_matches": true,
+  "input_shape": [
+    1,
+    12,
+    3,
+    6
+  ],
+  "raw_prediction_first_segment": 0.32243794202804565,
+  "inverse_seconds_first_segment": 52.464086448253795,
+  "eta_minutes_first_segment": 0.8744014408042299,
+  "temporary_artifacts_deleted_on_exit": true,
+  "v1_sha256": "8435e95b2d7c6db7493adc4add99f659c316ec4ad288d393557d86065ba5db86",
+  "v1_unchanged_during_verification": true,
+  "tests": {
+    "run": 4,
+    "passed": 4
+  },
+  "real_data_training_status": "blocked: no measured traversal dataset or matching real GTFS in checkout"
+}

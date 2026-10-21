@@ -1,0 +1,2 @@
+route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
+5898,12550_D_1046876,1046876_D_1_0,*N.BRASÍLIA/JD.ESPERANÇA/S.ABRIL X BARRA VIA ACM,0,5898_001M,12550_I

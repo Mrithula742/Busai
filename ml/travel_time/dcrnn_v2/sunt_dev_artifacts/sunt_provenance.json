@@ -1,0 +1,427 @@
+{
+  "source_directory": "/Users/mrithula/Downloads/Salvador Urban Network Transportation (SUNT)",
+  "dataset": "Salvador Urban Network Transportation (SUNT)",
+  "route_short_name": "1386",
+  "route_id": "5898",
+  "direction_id": "I",
+  "service_code": 12550,
+  "gtfs_shape_id": "12550_I",
+  "topology_trip_id": "1046876_D_1_0",
+  "trip_id_role": "Topology template only; actual scheduled GTFS trip is not identified in AVL",
+  "source_timezone_assumption": "America/Sao_Paulo",
+  "start": "2024-05-21",
+  "end": "2024-06-03",
+  "stops": [
+    "45834097",
+    "44782442",
+    "47566681",
+    "44783270",
+    "47568385",
+    "44784196",
+    "44784333",
+    "44782447",
+    "45833333",
+    "44784053"
+  ],
+  "segments": 9,
+  "target": "AVL stop-transition proxy: last upstream observation to first downstream observation",
+  "target_limitations": "Sampling times do not prove actual arrival/departure; extra AVL stops between adjacent GTFS anchors may contribute dwell.",
+  "thresholds": {
+    "min_seconds": 5,
+    "max_seconds": 900,
+    "max_straight_line_speed_mps": 35
+  },
+  "batch_size": 8192,
+  "max_retained_rows_per_day": 100000,
+  "rows": 8132,
+  "counters": {
+    "outside_file_date": 0,
+    "accepted": 12375,
+    "accepted_with_extra_non_gtfs_records": 7549,
+    "skipped_or_reverse_gtfs_transition": 13987,
+    "duration_outside_bounds": 768,
+    "source_discontinuities": 608,
+    "implausible_minimum_speed": 25
+  },
+  "per_day": [
+    {
+      "day": "2024-05-21",
+      "status": "processed",
+      "selected_gps_rows": 28115,
+      "written_traversals": 1161,
+      "outside_file_date": 0,
+      "accepted": 1161,
+      "accepted_with_extra_non_gtfs_records": 681,
+      "skipped_or_reverse_gtfs_transition": 1333,
+      "duration_outside_bounds": 69,
+      "source_discontinuities": 52,
+      "implausible_minimum_speed": 1
+    },
+    {
+      "day": "2024-05-22",
+      "status": "processed",
+      "selected_gps_rows": 27991,
+      "written_traversals": 1125,
+      "outside_file_date": 0,
+      "accepted": 1125,
+      "accepted_with_extra_non_gtfs_records": 696,
+      "skipped_or_reverse_gtfs_transition": 1295,
+      "duration_outside_bounds": 77,
+      "source_discontinuities": 51,
+      "implausible_minimum_speed": 3
+    },
+    {
+      "day": "2024-05-23",
+      "status": "processed",
+      "selected_gps_rows": 27559,
+      "written_traversals": 1145,
+      "outside_file_date": 0,
+      "accepted": 1145,
+      "accepted_with_extra_non_gtfs_records": 717,
+      "skipped_or_reverse_gtfs_transition": 1300,
+      "duration_outside_bounds": 72,
+      "source_discontinuities": 53,
+      "implausible_minimum_speed": 1
+    },
+    {
+      "day": "2024-05-24",
+      "status": "processed",
+      "selected_gps_rows": 27664,
+      "written_traversals": 1169,
+      "outside_file_date": 0,
+      "accepted": 1169,
+      "accepted_with_extra_non_gtfs_records": 759,
+      "skipped_or_reverse_gtfs_transition": 1313,
+      "duration_outside_bounds": 61,
+      "source_discontinuities": 52,
+      "implausible_minimum_speed": 1
+    },
+    {
+      "day": "2024-05-25",
+      "status": "processed",
+      "selected_gps_rows": 17041,
+      "written_traversals": 714,
+      "outside_file_date": 0,
+      "accepted": 714,
+      "accepted_with_extra_non_gtfs_records": 447,
+      "skipped_or_reverse_gtfs_transition": 812,
+      "duration_outside_bounds": 50,
+      "source_discontinuities": 36
+    },
+    {
+      "day": "2024-05-26",
+      "status": "processed",
+      "selected_gps_rows": 13135,
+      "written_traversals": 555,
+      "outside_file_date": 0,
+      "accepted": 555,
+      "accepted_with_extra_non_gtfs_records": 322,
+      "skipped_or_reverse_gtfs_transition": 614,
+      "source_discontinuities": 36,
+      "duration_outside_bounds": 39,
+      "implausible_minimum_speed": 2
+    },
+    {
+      "day": "2024-05-27",
+      "status": "processed",
+      "selected_gps_rows": 27323,
+      "written_traversals": 1146,
+      "outside_file_date": 0,
+      "accepted": 1146,
+      "accepted_with_extra_non_gtfs_records": 706,
+      "skipped_or_reverse_gtfs_transition": 1278,
+      "duration_outside_bounds": 64,
+      "source_discontinuities": 54,
+      "implausible_minimum_speed": 2
+    },
+    {
+      "day": "2024-05-28",
+      "status": "processed",
+      "selected_gps_rows": 23346,
+      "written_traversals": 983,
+      "outside_file_date": 0,
+      "accepted": 983,
+      "accepted_with_extra_non_gtfs_records": 612,
+      "skipped_or_reverse_gtfs_transition": 1108,
+      "duration_outside_bounds": 58,
+      "source_discontinuities": 45,
+      "implausible_minimum_speed": 3
+    },
+    {
+      "day": "2024-05-29",
+      "status": "processed",
+      "selected_gps_rows": 23268,
+      "written_traversals": 974,
+      "outside_file_date": 0,
+      "skipped_or_reverse_gtfs_transition": 1093,
+      "accepted": 974,
+      "accepted_with_extra_non_gtfs_records": 587,
+      "duration_outside_bounds": 57,
+      "source_discontinuities": 47,
+      "implausible_minimum_speed": 2
+    },
+    {
+      "day": "2024-05-30",
+      "status": "processed",
+      "selected_gps_rows": 12590,
+      "written_traversals": 565,
+      "outside_file_date": 0,
+      "accepted": 565,
+      "accepted_with_extra_non_gtfs_records": 313,
+      "skipped_or_reverse_gtfs_transition": 598,
+      "source_discontinuities": 33,
+      "duration_outside_bounds": 27,
+      "implausible_minimum_speed": 3
+    },
+    {
+      "day": "2024-05-31",
+      "status": "processed",
+      "selected_gps_rows": 18028,
+      "written_traversals": 748,
+      "outside_file_date": 0,
+      "accepted": 748,
+      "accepted_with_extra_non_gtfs_records": 437,
+      "skipped_or_reverse_gtfs_transition": 880,
+      "duration_outside_bounds": 51,
+      "source_discontinuities": 37,
+      "implausible_minimum_speed": 3
+    },
+    {
+      "day": "2024-06-01",
+      "status": "processed",
+      "selected_gps_rows": 15658,
+      "written_traversals": 649,
+      "outside_file_date": 0,
+      "accepted": 649,
+      "accepted_with_extra_non_gtfs_records": 402,
+      "skipped_or_reverse_gtfs_transition": 732,
+      "duration_outside_bounds": 60,
+      "source_discontinuities": 41
+    },
+    {
+      "day": "2024-06-02",
+      "status": "processed",
+      "selected_gps_rows": 11839,
+      "written_traversals": 549,
+      "outside_file_date": 0,
+      "accepted": 549,
+      "accepted_with_extra_non_gtfs_records": 358,
+      "skipped_or_reverse_gtfs_transition": 604,
+      "duration_outside_bounds": 23,
+      "source_discontinuities": 29,
+      "implausible_minimum_speed": 3
+    },
+    {
+      "day": "2024-06-03",
+      "status": "processed",
+      "selected_gps_rows": 21317,
+      "written_traversals": 892,
+      "outside_file_date": 0,
+      "accepted": 892,
+      "accepted_with_extra_non_gtfs_records": 512,
+      "skipped_or_reverse_gtfs_transition": 1027,
+      "duration_outside_bounds": 60,
+      "source_discontinuities": 42,
+      "implausible_minimum_speed": 1
+    }
+  ],
+  "sources": [
+    {
+      "path": "AVL/avl-vehicles-2024-05-21.parquet",
+      "bytes": 13023861,
+      "rows": 2704823,
+      "sha256": "14101320d1a964b0f7720a7fe5527a6aae5e3d7a0e6ff3e0ff6ac2884bd2f94d"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-21.parquet",
+      "bytes": 453478,
+      "rows": 212730,
+      "sha256": "c0986b1d3ab73edfcdb46b5fcc9bcfca28c9098b828344deadff9b4441c1c994"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-22.parquet",
+      "bytes": 13122458,
+      "rows": 2739722,
+      "sha256": "4c8acbe0fa6c62394d7ca99c903212191e200c054c0d1bb6954b72bb1c4abea4"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-22.parquet",
+      "bytes": 453999,
+      "rows": 212791,
+      "sha256": "10745f188909958f0bfb70eb7f4cc7a0f951a57d44e58d9007ccd010aca93883"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-23.parquet",
+      "bytes": 13071396,
+      "rows": 2750451,
+      "sha256": "5aafea2c41c64d2cb7292646b17076ad58866189236b80d8f2534c9de2f26625"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-23.parquet",
+      "bytes": 453880,
+      "rows": 212792,
+      "sha256": "f5953627208bef1f8f8ba2d4ba60fa7d453ba7d9e2eaec3429f591f5d9045246"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-24.parquet",
+      "bytes": 12825839,
+      "rows": 2758237,
+      "sha256": "fd7f770bfe1776b3d105e552b86afd9d2a1460039745750603dea4751c69ecf6"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-24.parquet",
+      "bytes": 452574,
+      "rows": 211836,
+      "sha256": "e79c7cf8c2fd5d4932b8b39781081d1f0fb766abc98258f7590a264cb79a4e17"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-25.parquet",
+      "bytes": 9083528,
+      "rows": 1857943,
+      "sha256": "51d809a9879b4fe4f1a18c13319ad28b7d793270ed1e4c1d1dfc278224136ddb"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-25.parquet",
+      "bytes": 452970,
+      "rows": 212180,
+      "sha256": "b62e7c56fa6a6a76b5dfae589a8e34997328e7350320a9d268000777cafc48f5"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-26.parquet",
+      "bytes": 6224798,
+      "rows": 1292499,
+      "sha256": "6363df1ce5420f018fc7ed421a84cc8d9a4303891c1a7b7fcba02df68c66cb62"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-26.parquet",
+      "bytes": 453248,
+      "rows": 212282,
+      "sha256": "671c7627437e661012b72543b17144f6b55a8b89a0b3517a0a9a5ba2f2e490b6"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-27.parquet",
+      "bytes": 13102926,
+      "rows": 2761324,
+      "sha256": "9baa4d4a5c6ee9ea93a5693ff845738358d57cf89c6663c60d4c5e6dd5f8ebf7"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-27.parquet",
+      "bytes": 452970,
+      "rows": 212290,
+      "sha256": "815db78f1c642b4065b9580663b5384ebee47cba877c191d50b3a3c5b60cd22d"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-28.parquet",
+      "bytes": 12953261,
+      "rows": 2784263,
+      "sha256": "4f39b09aa74121fb1c3958a29043c7fdb800930866df57d8994110a5e017844d"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-28.parquet",
+      "bytes": 454224,
+      "rows": 212548,
+      "sha256": "10dfbe5d8b7483201692694d262c69403739cc5a292e7376f10b06379476694d"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-29.parquet",
+      "bytes": 12996709,
+      "rows": 2767582,
+      "sha256": "12af14c9bcd8e586d167cddf35ee5a0b12fb29ec1e40deae272d3dcc7ea99cc1"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-29.parquet",
+      "bytes": 458442,
+      "rows": 213468,
+      "sha256": "cd4b2501b6f38ef2e6b539fe0f5b1047095d5a3ccc4ab930dfeee156834507a0"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-30.parquet",
+      "bytes": 6262186,
+      "rows": 1306896,
+      "sha256": "6605a54703202047411bdf1c85dbc85b3b9a140b45e13bd95f42f76dab0913e5"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-30.parquet",
+      "bytes": 461281,
+      "rows": 214026,
+      "sha256": "92cf1f7e898a65aba126ca0d316767404fc4bf6e5d1739c551127a92c97650ee"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-05-31.parquet",
+      "bytes": 13038163,
+      "rows": 2773819,
+      "sha256": "8e016d59c6a599fe089dd72172087a45c9121cc8514a2f18894b982a8866fcf4"
+    },
+    {
+      "path": "AVL/avl-lines-2024-05-31.parquet",
+      "bytes": 463463,
+      "rows": 214506,
+      "sha256": "490c3c43aa14eb902ba313dc620ad10189c49ba6d48793bc304a869421ba01f3"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-06-01.parquet",
+      "bytes": 9130050,
+      "rows": 1939624,
+      "sha256": "2f9345be0bdb0c49e1974d3317a81f79ed0cf7d647199116638d7d5abc028118"
+    },
+    {
+      "path": "AVL/avl-lines-2024-06-01.parquet",
+      "bytes": 463769,
+      "rows": 214451,
+      "sha256": "27b031225c201e2efd6ddd90d705d7db5617625f2c7c409c127addfe1f481a00"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-06-02.parquet",
+      "bytes": 6263291,
+      "rows": 1298486,
+      "sha256": "d74e607b32c94d1e387afd5e7d3e6cfb9cd8688dbf35ef193d457caec6597c01"
+    },
+    {
+      "path": "AVL/avl-lines-2024-06-02.parquet",
+      "bytes": 462852,
+      "rows": 214545,
+      "sha256": "98e67d8b773756ba695103247f8ca0f6381fc4ce4b487fb3305b71a04fdb2c9f"
+    },
+    {
+      "path": "AVL/avl-vehicles-2024-06-03.parquet",
+      "bytes": 12876313,
+      "rows": 2691533,
+      "sha256": "dee9ecdea800abfdd025f393e65bae9c13b03c81f94ccfebf8ef15f210ea07e6"
+    },
+    {
+      "path": "AVL/avl-lines-2024-06-03.parquet",
+      "bytes": 463198,
+      "rows": 214569,
+      "sha256": "9716636cbc50ccbdbb4e060f1f3f48db38dcfdf71750cdc2810b46fb836a08b3"
+    }
+  ],
+  "peak_preprocessing_rss_mib": 128.75,
+  "additional_subset_bytes": 1962011,
+  "gtfs_sources": {
+    "routes.txt": "42b4b629ea1da376731e0bf7cfbaafbc7ed0a297b027c909f8403cf1e7bd2752",
+    "trips.txt": "7333d679d253d1688fa7bea05abf00c9f1d5df10f52314fc8187b3dc26cefb2c",
+    "stops.txt": "00ed5f0882fcc4c676003e89882f107fb6c922cdd2912c4a720f868c26ba426c",
+    "stop_times.txt": "334af243aa35944933372721496cfdf1dbd6c501bd45d697116ff1327370027a",
+    "calendar.txt": "88b9421f56d1f5661322e7ec503e7874775d4c2a0a1df12e0a07736b1f99c6dd"
+  },
+  "candidate_report_sha256": "50f09787802debd6093a738d2b9fec82766227d2a409e045663bc6d12f5c7f81",
+  "candidate_rows": 12375,
+  "candidate_segments": 20,
+  "selection_method": "Longest contiguous chain eligible from observed TRAIN bins only; earliest chain wins ties",
+  "selection_train_fraction": 0.7,
+  "selection_min_train_observations": 5,
+  "selection_validation_start": "2024-05-30T22:20:00+00:00",
+  "selected_candidate_edge_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "counters_scope": "Counters and per_day describe the 20-segment candidate extraction before connected selection",
+  "final_cutoff_selection_rechecked": true
+}

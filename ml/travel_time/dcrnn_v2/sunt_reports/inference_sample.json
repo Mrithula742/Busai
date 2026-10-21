@@ -1,0 +1,150 @@
+{
+  "data_kind": "observed",
+  "as_of": "2024-06-02T00:00:00+00:00",
+  "scope": "segment traversal duration; excludes waiting and remaining-distance adjustment",
+  "input_shape": [
+    1,
+    12,
+    9,
+    6
+  ],
+  "raw_scaled": [
+    [
+      -0.2854069173336029,
+      -0.19568541646003723,
+      -0.250355988740921,
+      -0.1612282693386078,
+      -0.17333105206489563,
+      -0.22900709509849548,
+      -0.3051072061061859,
+      -0.25614646077156067,
+      -0.20075026154518127
+    ]
+  ],
+  "inverse_transformed_seconds": [
+    [
+      41.83121362003351,
+      29.253981605667008,
+      20.899867472282835,
+      21.70452284092812,
+      34.61996374120406,
+      17.600291483699635,
+      14.731889421222093,
+      39.94520304408485,
+      17.40395382458692
+    ]
+  ],
+  "predictions": [
+    {
+      "node_index": 0,
+      "route_id": "5898",
+      "from_stop_id": "44782442",
+      "to_stop_id": "47566681",
+      "predicted_travel_time_seconds": 41.83121362003351,
+      "eta_minutes": 0.6971868936672252,
+      "horizon_seconds": [
+        41.83121362003351
+      ],
+      "observed_input_bins": 1
+    },
+    {
+      "node_index": 1,
+      "route_id": "5898",
+      "from_stop_id": "44782447",
+      "to_stop_id": "45833333",
+      "predicted_travel_time_seconds": 29.253981605667008,
+      "eta_minutes": 0.48756636009445015,
+      "horizon_seconds": [
+        29.253981605667008
+      ],
+      "observed_input_bins": 0
+    },
+    {
+      "node_index": 2,
+      "route_id": "5898",
+      "from_stop_id": "44783270",
+      "to_stop_id": "47568385",
+      "predicted_travel_time_seconds": 20.899867472282835,
+      "eta_minutes": 0.34833112453804727,
+      "horizon_seconds": [
+        20.899867472282835
+      ],
+      "observed_input_bins": 0
+    },
+    {
+      "node_index": 3,
+      "route_id": "5898",
+      "from_stop_id": "44784196",
+      "to_stop_id": "44784333",
+      "predicted_travel_time_seconds": 21.70452284092812,
+      "eta_minutes": 0.361742047348802,
+      "horizon_seconds": [
+        21.70452284092812
+      ],
+      "observed_input_bins": 0
+    },
+    {
+      "node_index": 4,
+      "route_id": "5898",
+      "from_stop_id": "44784333",
+      "to_stop_id": "44782447",
+      "predicted_travel_time_seconds": 34.61996374120406,
+      "eta_minutes": 0.5769993956867343,
+      "horizon_seconds": [
+        34.61996374120406
+      ],
+      "observed_input_bins": 0
+    },
+    {
+      "node_index": 5,
+      "route_id": "5898",
+      "from_stop_id": "45833333",
+      "to_stop_id": "44784053",
+      "predicted_travel_time_seconds": 17.600291483699635,
+      "eta_minutes": 0.2933381913949939,
+      "horizon_seconds": [
+        17.600291483699635
+      ],
+      "observed_input_bins": 0
+    },
+    {
+      "node_index": 6,
+      "route_id": "5898",
+      "from_stop_id": "45834097",
+      "to_stop_id": "44782442",
+      "predicted_travel_time_seconds": 14.731889421222093,
+      "eta_minutes": 0.24553149035370153,
+      "horizon_seconds": [
+        14.731889421222093
+      ],
+      "observed_input_bins": 1
+    },
+    {
+      "node_index": 7,
+      "route_id": "5898",
+      "from_stop_id": "47566681",
+      "to_stop_id": "44783270",
+      "predicted_travel_time_seconds": 39.94520304408485,
+      "eta_minutes": 0.6657533840680808,
+      "horizon_seconds": [
+        39.94520304408485
+      ],
+      "observed_input_bins": 0
+    },
+    {
+      "node_index": 8,
+      "route_id": "5898",
+      "from_stop_id": "47568385",
+      "to_stop_id": "44784196",
+      "predicted_travel_time_seconds": 17.40395382458692,
+      "eta_minutes": 0.2900658970764487,
+      "horizon_seconds": [
+        17.40395382458692
+      ],
+      "observed_input_bins": 0
+    }
+  ],
+  "saved_sample_reproduced": true,
+  "target_quality": "AVL stop-transition proxy; not verified arrival/departure ground truth",
+  "production_ready": false
+}

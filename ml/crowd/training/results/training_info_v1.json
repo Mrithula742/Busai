@@ -1,0 +1,1 @@
+{"training_seconds": 49.349228620529175, "best_epoch": 30, "epochs_run": 38, "best_val_loss": 0.03736331283971481, "n_params": 26913, "hyperparameters": {"lr": 0.001, "weight_decay": 1e-05, "batch_size": 64, "max_epochs": 60, "patience": 8, "grad_clip": 5.0}}

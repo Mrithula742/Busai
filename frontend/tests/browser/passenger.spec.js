@@ -1,0 +1,100 @@
+import { test, expect } from '@playwright/test';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const backend = process.env.E2E_BACKEND || 'http://127.0.0.1:8012';
+
+test('passenger journey, live simulator, same-route buses, stale, reconnect and events', async ({ page, context, request }) => {
+  const errors = [], passengerUploads = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('request', req => { if (req.url().includes('/api/buses/location')) passengerUploads.push(req.url()); });
+  let snapshots = 0;
+  page.on('request', req => { if (req.url().includes('/api/snapshot')) snapshots++; });
+  await context.grantPermissions(['geolocation']);
+  await context.setGeolocation({ latitude: 13, longitude: 80.005, accuracy: 9 });
+  await page.addInitScript(() => {
+    const Native = window.WebSocket;
+    window.__testSockets = [];
+    window.WebSocket = class extends Native { constructor(...args) { super(...args); window.__testSockets.push(this); } };
+  });
+  const simulator = spawn(path.join(root, '.venv/bin/python'), ['-B', 'simulator/multi_bus_simulator.py', '--backend', backend, '--config', 'frontend/tests/fixtures/simulator.json'], { cwd: root, stdio: 'ignore' });
+  try {
+    await page.goto('/');
+  await page.getByRole('button', { name: /Start journey/ }).click();
+    await expect(page.getByText('GPS connected', { exact: true })).toBeVisible();
+    await expect(page.getByText('SAMPLE DATA', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Use my current location' }).click();
+    await expect(page.getByTestId('passenger-location')).toContainText('Device location found');
+    await expect(page.getByTestId('passenger-location')).toContainText('13.00000, 80.00500');
+    await expect(page.locator('.leaflet-passenger-pane path').last()).toBeVisible();
+    await expect(page.locator('.stop-row').first()).toContainText('SAMPLE Central');
+    await page.getByLabel('Walking radius').selectOption('500');
+    await page.getByLabel('Where are you going?').fill('eAs');
+    await page.getByRole('button', { name: 'SAMPLE East SAMPLE_E' }).click();
+    await expect(page.getByRole('heading', { name: 'One route. See each bus.' })).toBeVisible();
+    const option = page.getByTestId('journey-option');
+    await expect(option).toHaveCount(1);
+    await expect(option.getByTestId('bus-option-BUS_001')).toBeVisible();
+    await expect(option.getByTestId('bus-option-BUS_002')).toBeVisible();
+    await expect(option).toContainText('Model not connected');
+    const marker = page.locator('.bus-marker[title^="BUS_001"]');
+    await expect(marker).toBeVisible();
+    const initialTransform = await marker.getAttribute('style');
+    await expect.poll(() => marker.getAttribute('style'), { timeout: 6000 }).not.toBe(initialTransform);
+    await expect(marker).toHaveAttribute('title', /SIMULATOR/);
+    await page.getByLabel('Preference optional').selectOption('less_crowd');
+    await expect(page.getByText('Prediction model not connected yet. This preference is not applied.')).toBeVisible();
+    await page.getByRole('button', { name: 'Show boarding & destination stops' }).click();
+    await page.screenshot({ path: 'test-results/passenger-desktop.png', fullPage: true });
+
+    const event = { event_id: `BROWSER_${Date.now()}`, event_type: 'ROAD_BLOCK', latitude: 13, longitude: 80.005, route_id: 'SAMPLE_R1', severity: 'HIGH', start_time: new Date().toISOString(), description: 'SAMPLE browser test disruption' };
+    const create = await request.post(`${backend}/api/network-events`, { data: event });
+    expect(create.status()).toBe(201);
+    await expect(page.getByTestId('network-event')).toContainText(event.description);
+    await expect(page.locator('.event-marker')).toHaveCount(1);
+    const before = snapshots;
+    await context.setOffline(true);
+    await page.evaluate(() => window.__testSockets.filter(socket => socket.url.includes('/ws/buses')).forEach(socket => socket.close()));
+    await expect(page.getByText('Connection interrupted — last known positions')).toBeVisible();
+    await context.setOffline(false);
+    await expect(page.getByText('GPS connected', { exact: true })).toBeVisible({ timeout: 20000 });
+    expect(snapshots).toBeGreaterThan(before);
+    await expect(page.getByTestId('network-event')).toContainText(event.description);
+    await request.post(`${backend}/api/network-events/${event.event_id}/clear`);
+    await expect(page.getByTestId('network-event')).toHaveCount(0);
+    await expect(page.locator('.event-marker')).toHaveCount(0);
+    await page.getByLabel('Where are you going?').fill('north');
+    await page.getByRole('button', { name: 'SAMPLE North SAMPLE_N' }).click();
+    await expect(page.getByRole('heading', { name: '2 routes to explore' })).toBeVisible();
+    await page.getByLabel('Where are you going?').fill('Kanchipuram');
+    await expect(page.getByText('No matching destination in the loaded GTFS.')).toBeVisible();
+    await page.getByLabel('Where are you going?').fill('east');
+    await page.getByRole('button', { name: 'SAMPLE East SAMPLE_E' }).click();
+    simulator.kill('SIGINT');
+    await expect(page.locator('.bus-marker.is-stale')).toHaveCount(6, { timeout: 15000 });
+    await expect(page.getByTestId('bus-option-BUS_001')).toHaveCount(0);
+    await expect(page.getByText('No active bus with confirmed upstream trip progress.', { exact: false })).toBeVisible();
+    expect(passengerUploads).toHaveLength(0);
+    expect(errors).toEqual([]);
+  } finally { simulator.kill('SIGINT'); }
+});
+
+test('mobile denied permission, labelled sample origin and layout', async ({ page, context }) => {
+  await context.clearPermissions();
+  await page.addInitScript(() => {
+    navigator.geolocation.getCurrentPosition = (_, error) => error({ code: 1, message: 'Test permission denial' });
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('button', { name: /Start journey/ }).click();
+  await expect(page.getByText('SAMPLE DATA', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Use my current location' }).click();
+  await expect(page.getByText('Location permission denied. Enable it in your browser settings.')).toBeVisible();
+  await page.getByText('Try a sample journey', { exact: true }).click();
+  await page.getByRole('button', { name: 'Use SAMPLE origin' }).click();
+  await expect(page.getByTestId('passenger-location')).toContainText('SAMPLE origin · not device GPS');
+  await expect(page.locator('.stop-row').first()).toContainText('SAMPLE Central');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: 'test-results/passenger-mobile.png', fullPage: true });
+});

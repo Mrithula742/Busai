@@ -1,0 +1,62 @@
+[
+  {
+    "epoch": 1,
+    "training_MAE_scaled": 0.5271840692026853,
+    "validation": {
+      "model": {
+        "MAE_seconds": 8.525492859304538,
+        "RMSE_seconds": 27.1697811524022,
+        "R2": 0.15715082018429882,
+        "WAPE_percent": 27.74618133215402,
+        "observed_target_count": 913
+      },
+      "persistence": {
+        "MAE_seconds": 12.450164289359586,
+        "RMSE_seconds": 38.218122180957295,
+        "R2": -0.667693657257737,
+        "WAPE_percent": 40.519008307029296,
+        "observed_target_count": 913
+      }
+    }
+  },
+  {
+    "epoch": 2,
+    "training_MAE_scaled": 0.5113523803981276,
+    "validation": {
+      "model": {
+        "MAE_seconds": 8.528958258989215,
+        "RMSE_seconds": 26.992311508960768,
+        "R2": 0.1681256324656749,
+        "WAPE_percent": 27.757459461128636,
+        "observed_target_count": 913
+      },
+      "persistence": {
+        "MAE_seconds": 12.450164289359586,
+        "RMSE_seconds": 38.218122180957295,
+        "R2": -0.667693657257737,
+        "WAPE_percent": 40.519008307029296,
+        "observed_target_count": 913
+      }
+    }
+  },
+  {
+    "epoch": 3,
+    "training_MAE_scaled": 0.5083567812205015,
+    "validation": {
+      "model": {
+        "MAE_seconds": 8.413270808258558,
+        "RMSE_seconds": 27.186378416450196,
+        "R2": 0.15612075939328773,
+        "WAPE_percent": 27.380955130082924,
+        "observed_target_count": 913
+      },
+      "persistence": {
+        "MAE_seconds": 12.450164289359586,
+        "RMSE_seconds": 38.218122180957295,
+        "R2": -0.667693657257737,
+        "WAPE_percent": 40.519008307029296,
+        "observed_target_count": 913
+      }
+    }
+  }
+]

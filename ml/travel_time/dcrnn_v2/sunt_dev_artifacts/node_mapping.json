@@ -1,0 +1,56 @@
+[
+  {
+    "node_index": 0,
+    "route_id": "5898",
+    "from_stop_id": "44782442",
+    "to_stop_id": "47566681"
+  },
+  {
+    "node_index": 1,
+    "route_id": "5898",
+    "from_stop_id": "44782447",
+    "to_stop_id": "45833333"
+  },
+  {
+    "node_index": 2,
+    "route_id": "5898",
+    "from_stop_id": "44783270",
+    "to_stop_id": "47568385"
+  },
+  {
+    "node_index": 3,
+    "route_id": "5898",
+    "from_stop_id": "44784196",
+    "to_stop_id": "44784333"
+  },
+  {
+    "node_index": 4,
+    "route_id": "5898",
+    "from_stop_id": "44784333",
+    "to_stop_id": "44782447"
+  },
+  {
+    "node_index": 5,
+    "route_id": "5898",
+    "from_stop_id": "45833333",
+    "to_stop_id": "44784053"
+  },
+  {
+    "node_index": 6,
+    "route_id": "5898",
+    "from_stop_id": "45834097",
+    "to_stop_id": "44782442"
+  },
+  {
+    "node_index": 7,
+    "route_id": "5898",
+    "from_stop_id": "47566681",
+    "to_stop_id": "44783270"
+  },
+  {
+    "node_index": 8,
+    "route_id": "5898",
+    "from_stop_id": "47568385",
+    "to_stop_id": "44784196"
+  }
+]

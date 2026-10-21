@@ -1,0 +1,117 @@
+{
+  "data_kind": "observed",
+  "dataset": "/Users/mrithula/projects/BusSure/ml/travel_time/dcrnn_v2/sunt_connected_subset/segment_traversals.csv",
+  "rows": 8132,
+  "candidate_nodes": 9,
+  "selected_nodes": 9,
+  "excluded_nodes_without_training_coverage": 0,
+  "nodes": [
+    [
+      "5898",
+      "44782442",
+      "47566681"
+    ],
+    [
+      "5898",
+      "44782447",
+      "45833333"
+    ],
+    [
+      "5898",
+      "44783270",
+      "47568385"
+    ],
+    [
+      "5898",
+      "44784196",
+      "44784333"
+    ],
+    [
+      "5898",
+      "44784333",
+      "44782447"
+    ],
+    [
+      "5898",
+      "45833333",
+      "44784053"
+    ],
+    [
+      "5898",
+      "45834097",
+      "44782442"
+    ],
+    [
+      "5898",
+      "47566681",
+      "44783270"
+    ],
+    [
+      "5898",
+      "47568385",
+      "44784196"
+    ]
+  ],
+  "directed_graph_edges": 8,
+  "target": "next-bin mean measured segment traversal seconds",
+  "features": [
+    "travel_time_z",
+    "observed",
+    "hour_sin",
+    "hour_cos",
+    "weekday_sin",
+    "weekday_cos"
+  ],
+  "sequence_length": 12,
+  "prediction_horizon": 1,
+  "bin_minutes": 5,
+  "utc_bin_count": 3966,
+  "validation_start": "2024-05-30T22:20:00+00:00",
+  "test_start": "2024-06-01T23:55:00+00:00",
+  "split_fractions": [
+    0.7,
+    0.15,
+    0.15000000000000005
+  ],
+  "window_counts": {
+    "train": 1278,
+    "validation": 207,
+    "test": 209
+  },
+  "input_shape": [
+    "batch",
+    12,
+    9,
+    6
+  ],
+  "output_shape": [
+    "batch",
+    1,
+    9
+  ],
+  "observed_target_fraction": 0.2183840421359332,
+  "training_config": {
+    "sequence_length": 12,
+    "prediction_horizon": 1,
+    "bin_minutes": 5,
+    "train_fraction": 0.7,
+    "validation_fraction": 0.15,
+    "min_train_observations_per_node": 5,
+    "hidden_dim": 16,
+    "num_layers": 2,
+    "diffusion_steps": 2,
+    "dropout": 0.1,
+    "batch_size": 16,
+    "epochs": 3,
+    "patience": 3,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "gradient_clip": 5.0,
+    "seed": 42
+  },
+  "estimated_peak_training_ram_mib": 1024,
+  "estimated_peak_preprocessing_ram_mib": 500,
+  "estimated_subset_and_artifact_disk_bytes": 30000000,
+  "target_quality": "AVL stop-transition proxy; not verified door events",
+  "model_parameters": 24929
+}

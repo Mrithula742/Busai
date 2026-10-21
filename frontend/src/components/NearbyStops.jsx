@@ -1,0 +1,6 @@
+export default function NearbyStops({ stops, busy, error, onSelect, selected }) {
+  return <section className="nearby-section" aria-labelledby="nearby-title"><div className="section-label"><h2 id="nearby-title">Nearby stops</h2><span>{stops.length ? `${stops.length} found` : 'ON FOOT'}</span></div>
+    {busy ? <div className="stop-skeletons" role="status" aria-label="Finding nearby stops">{[0,1,2].map(index=><div className="stop-skeleton" key={index}><i/><span><i/><i/></span></div>)}</div> : error ? <p role="alert">{error}</p> : !stops.length ? <p className="muted">Use your location to discover nearby stops. If none appear, try a larger walking radius.</p> : stops.map(stop => <button className={`stop-row ${selected?.stop_id === stop.stop_id ? 'selected' : ''}`} key={stop.stop_id} onClick={() => onSelect(stop)}><span className="stop-dot"/><span className="stop-copy"><strong>{stop.stop_name}</strong><small>{Math.round(stop.distance_meters)} m away</small></span><span className="walk-time">~{stop.estimated_walking_minutes.toFixed(1)} min<small>walk</small></span></button>)}
+    {!!stops.length && <p className="footnote">Walking estimates use straight-line distance.</p>}
+  </section>;
+}

@@ -1,0 +1,57 @@
+{
+  "source": "/Users/mrithula/Downloads/Salvador Urban Network Transportation (SUNT)",
+  "directories": {
+    ".": {
+      "files": 1,
+      "bytes": 6148
+    },
+    "AFC": {
+      "files": 362,
+      "bytes": 5851893799
+    },
+    "AVL": {
+      "files": 686,
+      "bytes": 3507172971
+    },
+    "Alighting": {
+      "files": 1,
+      "bytes": 137
+    },
+    "Boarding": {
+      "files": 1,
+      "bytes": 135
+    },
+    "GTFS/BRT": {
+      "files": 7,
+      "bytes": 176064
+    },
+    "GTFS/BUS": {
+      "files": 13,
+      "bytes": 109568968
+    },
+    "OD": {
+      "files": 1,
+      "bytes": 121
+    }
+  },
+  "representative_parquet_metadata": {
+    "AVL/avl-vehicles-2024-03-01.parquet": {
+      "bytes": 12162768,
+      "rows": 2717810,
+      "row_groups": 3,
+      "schema": "vehicle: int32\nroute_short_name: string\ndirection_id: dictionary<values=string, indices=int32, ordered=0>\ngps_datetime: timestamp[ms]\nlongitude: float\nlatitude: float\nstop_id: uint32\nservice_code: uint32\n-- schema metadata --\npandas: '{\"index_columns\": [{\"kind\": \"range\", \"name\": null, \"start\": 0, \"' + 1274"
+    },
+    "AVL/avl-lines-2024-03-01.parquet": {
+      "bytes": 435322,
+      "rows": 203212,
+      "row_groups": 1,
+      "schema": "route_short_name: string\npt_sequence: uint16\ndirection_id: dictionary<values=string, indices=int32, ordered=0>\nlongitude: float\nlatitude: float\nstop_id: uint32\nroute_long_name: dictionary<values=string, indices=int32, ordered=0>\nservice_code: uint32\n-- schema metadata --\npandas: '{\"index_columns\": [{\"kind\": \"range\", \"name\": null, \"start\": 0, \"' + 1321"
+    },
+    "AFC/afc-2024-03-01.parquet": {
+      "bytes": 20505591,
+      "rows": 1420338,
+      "row_groups": 2,
+      "schema": "cod_card: dictionary<values=string, indices=int32, ordered=0>\nafc_datetime: timestamp[ns]\nintegration: bool\nroute_short_name: dictionary<values=string, indices=int32, ordered=0>\ndirection_id: dictionary<values=string, indices=int32, ordered=0>\nvalue: float\nvehicle: dictionary<values=string, indices=int32, ordered=0>\n-- schema metadata --\npandas: '{\"index_columns\": [], \"column_indexes\": [], \"columns\": [{\"name\":' + 1083"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "sequence_length": 12,
+  "prediction_horizon": 1,
+  "bin_minutes": 5,
+  "train_fraction": 0.7,
+  "validation_fraction": 0.15,
+  "min_train_observations_per_node": 5,
+  "hidden_dim": 32,
+  "num_layers": 2,
+  "diffusion_steps": 2,
+  "dropout": 0.1,
+  "batch_size": 32,
+  "epochs": 50,
+  "patience": 8,
+  "learning_rate": 0.001,
+  "weight_decay": 0.00001,
+  "gradient_clip": 5.0,
+  "seed": 42
+}

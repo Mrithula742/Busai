@@ -1,0 +1,10 @@
+{
+  "data_source": "FICTIONAL_CHENNAI_DEMO",
+  "warning": "Real place names, fictional bus routes and stop order. Not MTC/TNSTC service information. Do not use for travel.",
+  "routes": [
+    {"route_id": "DEMO_CHENNAI_A", "stops": ["Madipakkam", "Velachery", "Guindy", "T Nagar", "Chennai Central"]},
+    {"route_id": "DEMO_CHENNAI_B", "stops": ["Madipakkam", "Guindy", "Chennai Central"]},
+    {"route_id": "DEMO_TAMILNADU_C", "stops": ["Chennai", "Tambaram", "Kanchipuram"]},
+    {"route_id": "DEMO_TAMILNADU_D", "stops": ["Chennai", "Demo interchange", "Kanchipuram"]}
+  ]
+}

@@ -1,0 +1,12 @@
+stop_id,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station
+45834097_S,Praça São Benedito 23 - Nova Brasília Salvador - BA 41350-150 Brasil,TP NOVA BRASILIA,-12.915771484375,-38.4088325500488,,,1,
+45834097,Praça São Benedito 23 - Nova Brasília Salvador - BA 41350-150 Brasil,TP NOVA BRASILIA,-12.915771484375,-38.4088325500488,,,0,45834097_S
+44782442,Travessa Nova Brasília 1-37 - Nova Brasília Salvador - BA Brasil,,-12.9175491333008,-38.4084815979004,,,0,
+47566681,Av. Aliomar Baleeiro 404 - Nova Brasília Salvador - BA 41388-005 Brasil,,-12.9188833236694,-38.4087333679199,,,0,
+44783270,Av. Aliomar Baleeiro 423 - São Marcos Salvador - BA 41350-275 Brasil,,-12.9190769195557,-38.4114112854004,,,0,
+47568385,Av. Aliomar Baleeiro 370 - Nova Brasília Salvador - BA 41388-005 Brasil,,-12.918848991394,-38.4129638671875,,,0,
+44784196,001460 - Aliomar Baleeiro 6101-6195 - Nova Brasília Salvador - BA 41350-275 Brasil,,-12.9179821014404,-38.4142074584961,,,0,
+44784333,001233 - Aliomar Baleeiro 5898-6040 - Canabrava Salvador - BA 41350-275 Brasil,,-12.9166164398193,-38.4154472351074,,,0,
+44782447,Avenida Aliomar Baleeiro 5557-5717 - Jardim Nova Esperanca Salvador - BA 41370-040 Brasil,,-12.9170684814453,-38.4185447692871,,,0,
+45833333,Av. Aliomar Baleeiro 5257-5321 - São Marcos Salvador - BA Brasil,,-12.9169054031372,-38.4212455749512,,,0,
+44784053,Rua Simone Barradas 160 - Jardim Nova Esperanca Salvador - BA 41370-170 Brasil,,-12.9165754318237,-38.4219245910645,,,0,

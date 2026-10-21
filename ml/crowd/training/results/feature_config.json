@@ -1,0 +1,24 @@
+{
+  "input_features": [
+    "boarding",
+    "landing",
+    "loader_prev",
+    "hour_sin",
+    "hour_cos",
+    "dow_sin",
+    "dow_cos",
+    "is_weekend"
+  ],
+  "feature_notes": {
+    "boarding": "estimated boardings at the stop in the 5-min slot (up to time t)",
+    "landing": "estimated alightings at the stop in the 5-min slot (up to time t)",
+    "loader_prev": "past occupancy values only (up to time t); the target slot t+1 is never an input",
+    "time_features": "cyclical hour and service-day weekday, weekend flag; 00:00-00:55 belongs to the previous service day"
+  },
+  "target": "loader (estimated bus occupancy) at the stop, 5 minutes after the last input step",
+  "scaling_method": "per-stop, per-feature standardisation (z-score), mean/std fitted on TRAIN service days only; time features not scaled",
+  "scaler_file": "scaler_params.csv",
+  "post_processing": "predictions clipped at 0 (occupancy cannot be negative)",
+  "crowd_classes": "per-stop terciles of TRAIN loader: LOW <= 33rd pct < MEDIUM <= 67th pct < HIGH (no capacity data)",
+  "graph": "GTFS-based, nodes = stop_id; edges between consecutive crowd stops on each trip; log1p(trip count) weights; undirected; self-loops; D^-1/2 (A+I) D^-1/2"
+}

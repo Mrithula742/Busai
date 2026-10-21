@@ -1,0 +1,14 @@
+{
+  "label": "SAMPLE browser-test fixture: slower buses so the boarding window remains testable",
+  "gtfs_directory": "../../../simulator/routes/sample_gtfs",
+  "interval_seconds": 1,
+  "dwell_seconds": 6,
+  "buses": [
+    {"bus_id":"BUS_001","route_id":"SAMPLE_R1","trip_id":"SAMPLE_T1","speed_mps":1,"start_progress":0.05},
+    {"bus_id":"BUS_002","route_id":"SAMPLE_R1","trip_id":"SAMPLE_T1B","speed_mps":2,"start_progress":0.15},
+    {"bus_id":"BUS_003","route_id":"SAMPLE_R2","trip_id":"SAMPLE_T2","speed_mps":1,"start_progress":0.05},
+    {"bus_id":"BUS_004","route_id":"SAMPLE_R2","trip_id":"SAMPLE_T2B","speed_mps":2,"start_progress":0.15},
+    {"bus_id":"BUS_005","route_id":"SAMPLE_R3","trip_id":"SAMPLE_T3","speed_mps":1,"start_progress":0.05},
+    {"bus_id":"BUS_006","route_id":"SAMPLE_R3","trip_id":"SAMPLE_T3B","speed_mps":2,"start_progress":0.15}
+  ]
+}

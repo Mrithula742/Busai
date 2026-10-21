@@ -1,0 +1,2 @@
+service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date
+12550_D_1046876,0,0,0,0,0,0,1,20240521,20240621

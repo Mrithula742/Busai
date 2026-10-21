@@ -1,0 +1,48 @@
+{
+  "training_seconds": 3.42999125,
+  "peak_training_rss_mib": 299.296875,
+  "production_ready": false,
+  "target_quality": "AVL stop-transition proxy: last upstream observation to first downstream observation",
+  "trip_id_role": "Topology template only; actual scheduled GTFS trip is not identified in AVL",
+  "v1_sha256": "8435e95b2d7c6db7493adc4add99f659c316ec4ad288d393557d86065ba5db86",
+  "v1_unchanged": true,
+  "metrics": {
+    "best_epoch": 3,
+    "epochs_run": 3,
+    "validation": {
+      "model": {
+        "MAE_seconds": 8.413270808258558,
+        "RMSE_seconds": 27.186378416450196,
+        "R2": 0.15612075939328773,
+        "WAPE_percent": 27.380955130082924,
+        "observed_target_count": 913
+      },
+      "persistence": {
+        "MAE_seconds": 12.450164289359586,
+        "RMSE_seconds": 38.218122180957295,
+        "R2": -0.667693657257737,
+        "WAPE_percent": 40.519008307029296,
+        "observed_target_count": 913
+      }
+    },
+    "test": {
+      "model": {
+        "MAE_seconds": 6.751775877816336,
+        "RMSE_seconds": 13.510195561191404,
+        "R2": 0.40470332104811924,
+        "WAPE_percent": 22.859417172766392,
+        "observed_target_count": 910
+      },
+      "persistence": {
+        "MAE_seconds": 9.623076923076923,
+        "RMSE_seconds": 18.870351901299532,
+        "R2": -0.16136888645874237,
+        "WAPE_percent": 32.58075117584946,
+        "observed_target_count": 910
+      }
+    },
+    "data_kind": "observed",
+    "quality_note": "Compare held-out model error with persistence; training success alone does not establish ETA quality."
+  },
+  "artifact_bytes_before_manifest": 1668551
+}

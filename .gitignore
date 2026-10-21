@@ -1,0 +1,80 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Python virtual environments and local environment files
+.venv/
+venv/
+env/
+ENV/
+.env
+.env.*
+!.env.example
+
+# Node.js and frontend build output
+node_modules/
+frontend/dist/
+frontend/build/
+frontend/test-results/
+frontend/playwright-report/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Local datasets (keep the directory layout, not downloaded/generated data)
+datasets/gtfs/*
+!datasets/gtfs/.gitkeep
+.certs/
+datasets/raw/*
+datasets/processed/*
+datasets/sample/*
+backend/app/data/gtfs/*
+backend/app/data/processed/*
+backend/app/data/sample/*
+
+# Trained models and checkpoints
+ml/travel_time/saved_models/*
+ml/crowd/saved_models/*
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.h5
+*.keras
+*.joblib
+*.pkl
+
+# V2 inference must travel with its complete reproducible artifact bundle.
+!ml/travel_time/dcrnn_v2/artifacts/dcrnn_v2_best.pt
+!ml/travel_time/dcrnn_v2/sunt_dev_artifacts/dcrnn_v2_best.pt
+
+# Temporary files, logs, and editor metadata
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.cache/
+tmp/
+temp/
+.idea/
+.vscode/
+
+# Small, validated synthetic-network inference bundles used by the showcase.
+!ml/synthetic/artifacts/crowd.pt
+!ml/synthetic/artifacts/eta.pt
+
+frontend/test-results-*/

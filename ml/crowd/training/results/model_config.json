@@ -1,0 +1,41 @@
+{
+  "model": "ST-GCN (2 ST blocks: gated temporal conv -> graph conv -> gated temporal conv, BatchNorm, Dropout)",
+  "graph_conv": "A_mix @ X @ W, A_mix = s*A_hat + (1-s)*I; A_hat = fixed symmetric-normalised GTFS adjacency with self-loops; s is learned per ST block (sigmoid of a parameter)",
+  "learned_graph_mix_s_per_block": [
+    0.105,
+    0.0724
+  ],
+  "output": "next-step loader for all nodes = last observed scaled loader + learned correction (residual)",
+  "hidden_dim": 32,
+  "temporal_kernel": 3,
+  "dropout": 0.2,
+  "residual_output": true,
+  "num_st_blocks": 2,
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "weight_decay": 1e-05,
+  "lr_scheduler": "ReduceLROnPlateau(factor=0.5, patience=4) on validation MAE_scaled",
+  "loss": "L1 on per-stop standardised target",
+  "grad_clip": 5.0,
+  "batch_size": 64,
+  "max_epochs": 100,
+  "epochs_run": 69,
+  "best_epoch": 59,
+  "early_stopping_patience": 10,
+  "early_stopping_and_checkpoint_criterion": "validation MAE_scaled (test set not used)",
+  "input_sequence_length": 12,
+  "input_minutes": 60,
+  "prediction_horizon_steps": 1,
+  "prediction_horizon_minutes": 5,
+  "num_nodes": 10,
+  "num_features": 8,
+  "trainable_parameters": 26915,
+  "seed": 42,
+  "split": "chronological, by whole service days: 64 train / 14 val / 13 test",
+  "window_counts": {
+    "train": 14592,
+    "val": 3192,
+    "test": 2964
+  },
+  "selection_history": "first model (MSE, GTFS graph) was evaluated on test once; the final model (L1, graph mix) was chosen using validation only, then evaluated on test. The test set was therefore seen twice."
+}

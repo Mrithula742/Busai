@@ -1,0 +1,314 @@
+{
+  "crowd": {
+    "path": "ml/crowd/training/results/best_stgcn_crowd_model.pt",
+    "format": "weights_only=True CPU load; dictionary containing model_state_dict",
+    "keys": [
+      "model_state_dict",
+      "epoch",
+      "val_loss",
+      "config",
+      "n_params",
+      "in_features",
+      "seq_len",
+      "num_nodes",
+      "graph",
+      "loss",
+      "seed",
+      "graph_mix_s"
+    ],
+    "tensor_shapes": {
+      "b1.t1.conv.weight": [
+        64,
+        8,
+        3,
+        1
+      ],
+      "b1.t1.conv.bias": [
+        64
+      ],
+      "b1.t1.res.weight": [
+        32,
+        8,
+        1,
+        1
+      ],
+      "b1.t1.res.bias": [
+        32
+      ],
+      "b1.g.logit": [
+        1
+      ],
+      "b1.g.A": [
+        10,
+        10
+      ],
+      "b1.g.I": [
+        10,
+        10
+      ],
+      "b1.g.lin.weight": [
+        32,
+        32,
+        1,
+        1
+      ],
+      "b1.g.lin.bias": [
+        32
+      ],
+      "b1.t2.conv.weight": [
+        64,
+        32,
+        3,
+        1
+      ],
+      "b1.t2.conv.bias": [
+        64
+      ],
+      "b1.bn.weight": [
+        32
+      ],
+      "b1.bn.bias": [
+        32
+      ],
+      "b1.bn.running_mean": [
+        32
+      ],
+      "b1.bn.running_var": [
+        32
+      ],
+      "b1.bn.num_batches_tracked": [],
+      "b2.t1.conv.weight": [
+        64,
+        32,
+        3,
+        1
+      ],
+      "b2.t1.conv.bias": [
+        64
+      ],
+      "b2.g.logit": [
+        1
+      ],
+      "b2.g.A": [
+        10,
+        10
+      ],
+      "b2.g.I": [
+        10,
+        10
+      ],
+      "b2.g.lin.weight": [
+        32,
+        32,
+        1,
+        1
+      ],
+      "b2.g.lin.bias": [
+        32
+      ],
+      "b2.t2.conv.weight": [
+        64,
+        32,
+        3,
+        1
+      ],
+      "b2.t2.conv.bias": [
+        64
+      ],
+      "b2.bn.weight": [
+        32
+      ],
+      "b2.bn.bias": [
+        32
+      ],
+      "b2.bn.running_mean": [
+        32
+      ],
+      "b2.bn.running_var": [
+        32
+      ],
+      "b2.bn.num_batches_tracked": [],
+      "out_t.weight": [
+        32,
+        32,
+        4,
+        1
+      ],
+      "out_t.bias": [
+        32
+      ],
+      "out_fc.weight": [
+        1,
+        32,
+        1,
+        1
+      ],
+      "out_fc.bias": [
+        1
+      ]
+    },
+    "config": {
+      "hidden": 32,
+      "kt": 3,
+      "dropout": 0.2,
+      "residual": true
+    },
+    "adjacency_shape": [
+      10,
+      10
+    ],
+    "prepared_arrays": {
+      "X_raw": {
+        "shape": [
+          21840,
+          10,
+          3
+        ],
+        "dtype": "float32"
+      },
+      "T_feat": {
+        "shape": [
+          21840,
+          5
+        ],
+        "dtype": "float32"
+      },
+      "seg_codes": {
+        "shape": [
+          21840
+        ],
+        "dtype": "int64"
+      },
+      "timestamps": {
+        "shape": [
+          21840
+        ],
+        "dtype": "int64"
+      },
+      "stops": {
+        "shape": [
+          10
+        ],
+        "dtype": "<U9"
+      }
+    },
+    "feature_contract": {
+      "input_features": [
+        "boarding",
+        "landing",
+        "loader_prev",
+        "hour_sin",
+        "hour_cos",
+        "dow_sin",
+        "dow_cos",
+        "is_weekend"
+      ],
+      "feature_notes": {
+        "boarding": "estimated boardings at the stop in the 5-min slot (up to time t)",
+        "landing": "estimated alightings at the stop in the 5-min slot (up to time t)",
+        "loader_prev": "past occupancy values only (up to time t); the target slot t+1 is never an input",
+        "time_features": "cyclical hour and service-day weekday, weekend flag; 00:00-00:55 belongs to the previous service day"
+      },
+      "target": "loader (estimated bus occupancy) at the stop, 5 minutes after the last input step",
+      "scaling_method": "per-stop, per-feature standardisation (z-score), mean/std fitted on TRAIN service days only; time features not scaled",
+      "scaler_file": "scaler_params.csv",
+      "post_processing": "predictions clipped at 0 (occupancy cannot be negative)",
+      "crowd_classes": "per-stop terciles of TRAIN loader: LOW <= 33rd pct < MEDIUM <= 67th pct < HIGH (no capacity data)",
+      "graph": "GTFS-based, nodes = stop_id; edges between consecutive crowd stops on each trip; log1p(trip count) weights; undirected; self-loops; D^-1/2 (A+I) D^-1/2"
+    }
+  },
+  "eta": {
+    "path": "ml/travel_time/dcrnn_v2/sunt_dev_artifacts/dcrnn_v2_best.pt",
+    "format": "weights_only=True CPU load; dictionary containing model_state_dict",
+    "keys": [
+      "schema_version",
+      "model_state_dict",
+      "model_config",
+      "feature_order",
+      "best_epoch",
+      "validation",
+      "seed",
+      "data_kind"
+    ],
+    "tensor_shapes": {
+      "supports": [
+        2,
+        9,
+        9
+      ],
+      "encoder.0.gates.linear.weight": [
+        32,
+        110
+      ],
+      "encoder.0.gates.linear.bias": [
+        32
+      ],
+      "encoder.0.candidate.linear.weight": [
+        16,
+        110
+      ],
+      "encoder.0.candidate.linear.bias": [
+        16
+      ],
+      "encoder.1.gates.linear.weight": [
+        32,
+        160
+      ],
+      "encoder.1.gates.linear.bias": [
+        32
+      ],
+      "encoder.1.candidate.linear.weight": [
+        16,
+        160
+      ],
+      "encoder.1.candidate.linear.bias": [
+        16
+      ],
+      "decoder.0.gates.linear.weight": [
+        32,
+        85
+      ],
+      "decoder.0.gates.linear.bias": [
+        32
+      ],
+      "decoder.0.candidate.linear.weight": [
+        16,
+        85
+      ],
+      "decoder.0.candidate.linear.bias": [
+        16
+      ],
+      "decoder.1.gates.linear.weight": [
+        32,
+        160
+      ],
+      "decoder.1.gates.linear.bias": [
+        32
+      ],
+      "decoder.1.candidate.linear.weight": [
+        16,
+        160
+      ],
+      "decoder.1.candidate.linear.bias": [
+        16
+      ],
+      "output.weight": [
+        1,
+        16
+      ],
+      "output.bias": [
+        1
+      ]
+    },
+    "config": {
+      "hidden_dim": 16,
+      "num_layers": 2,
+      "diffusion_steps": 2,
+      "dropout": 0.1,
+      "sequence_length": 12,
+      "prediction_horizon": 1,
+      "num_nodes": 9,
+      "input_dim": 6
+    }
+  }
+}

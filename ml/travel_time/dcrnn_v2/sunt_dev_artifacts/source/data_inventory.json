@@ -1,0 +1,30 @@
+{
+  "checkout": "/Users/mrithula/projects/BusSure",
+  "recorded_travel_time_rows": 0,
+  "historical_gps_avl_files": [],
+  "measured_segment_files": [],
+  "travel_time_prepared_arrays": [],
+  "real_gtfs_present": false,
+  "available_gtfs": {
+    "path": "simulator/routes/sample_gtfs",
+    "kind": "fictional sample schedules",
+    "stops": 5,
+    "routes": 3,
+    "trips": 6,
+    "stop_time_rows": 18,
+    "scheduled_traversals": 12,
+    "candidate_route_segment_nodes": 6,
+    "unique_directed_stop_pairs": 4,
+    "used_for_observed_training": false
+  },
+  "v2_status": "Source and temporary synthetic tests complete; real-data training awaits measured traversals and matching GTFS",
+  "selected_real_graph_nodes": null,
+  "target": "Next-bin mean measured segment traversal seconds",
+  "proposed_features": ["travel_time_z", "observed", "hour_sin", "hour_cos", "weekday_sin", "weekday_cos"],
+  "sequence_length": 12,
+  "prediction_horizon": 1,
+  "bin_minutes": 5,
+  "split": [0.7, 0.15, 0.15],
+  "input_shape": ["batch", 12, "N determined by observed training coverage and GTFS", 6],
+  "output_shape": ["batch", 1, "N determined by observed training coverage and GTFS"]
+}

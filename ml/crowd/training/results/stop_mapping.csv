@@ -1,0 +1,11 @@
+stop_id,node_index,stop_name,stop_lat,stop_lon,gtfs_trips,graph_degree
+125960550,0,R. Artêmio Castro Valente 11 - Canabrava Salvador - BA 41260-300 Brasil,-12.9211845397949,-38.428295135498,251,0
+230565994,1,Rua Professor Souza Brito 143 Salvador - Bahia Brasil,-12.9547719955444,-38.3530578613281,192,1
+258781031,2,ESTAÇÃO RODOVIÁRIA,-12.978835105896,-38.4657897949219,4277,2
+43768720,3,Avenida Vale Do Tororo 327 Salvador - Bahia 40050 Brasil,-12.9833889007568,-38.51123046875,10303,7
+44072192,4,Largo Campo Grande 584 Salvador - Bahia 40080-121 Brasil,-12.9891633987427,-38.5201301574707,631,2
+44783654,5,Av. Adhemar de Barros S/N - Universidade Federal da Bahia Universidade Federal da Bahia - Campus Ondina - Ondina Salvador - BA Brasil,-13.0024271011353,-38.506591796875,1101,2
+44783914,6,Rua da Conceição da Praia - Comercio Salvador - BA Brasil,-12.9740419387817,-38.5136909484863,1828,3
+44784438,7,Avenida Vasco da Gama 4274 - Brotas Salvador - BA Brasil,-12.9824495315552,-38.5036926269531,1443,2
+45833547,8,Av. Eng. Oscar Pontes 2015-2127 - Calçada Salvador - BA Brazil,-12.9534568786621,-38.5018653869629,401,2
+47568123,9,Av. Centenário 2761 - Chame-Chame Salvador - BA Brasil,-13.0052824020386,-38.5231628417969,1112,5

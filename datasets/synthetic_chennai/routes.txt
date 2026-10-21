@@ -1,0 +1,7 @@
+route_id,route_short_name,route_long_name,route_type
+SYN_A,SYN_A,Synthetic SYN_A,3
+SYN_A_R,SYN_A_R,Synthetic SYN_A_R,3
+SYN_B,SYN_B,Synthetic SYN_B,3
+SYN_B_R,SYN_B_R,Synthetic SYN_B_R,3
+SYN_C,SYN_C,Synthetic SYN_C,3
+SYN_C_R,SYN_C_R,Synthetic SYN_C_R,3

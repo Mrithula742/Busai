@@ -1,0 +1,12 @@
+{
+  "tests_passed": 7,
+  "fresh_process_inference_sample_reproduced": true,
+  "artifact_manifest_verified": true,
+  "v1_sha256": "8435e95b2d7c6db7493adc4add99f659c316ec4ad288d393557d86065ba5db86",
+  "existing_v2_core_matches_training_snapshot": true,
+  "full_network_training_started": false,
+  "source_zip_extracted": false,
+  "target_quality": "AVL stop-transition proxy: last upstream observation to first downstream observation",
+  "production_ready": false,
+  "derived_data_artifact_and_report_bytes": 5032123
+}
