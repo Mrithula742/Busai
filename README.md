@@ -8,7 +8,7 @@ Predict travel conditions. Compare journeys. Understand the trade-offs.
 
 **Deep Learning · Graph Neural Networks · Intelligent Transportation Systems**
 
-[Problem](#problem-statement) · [Solution](#our-solution) · [Methodology](#methodology) · [Dataset](#dataset-salvador-urban-network-transportation-sunt) · [Research papers](#10-research-papers-and-their-connection-to-busai) · [Run locally](#run-locally)
+[Problem](#problem-statement) · [Solution](#our-solution) · [Methodology](#methodology) · [Dataset](#dataset-salvador-urban-network-transportation-sunt) · [Journal articles](#10-journal-articles-and-their-connection-to-busai) · [Run locally](#run-locally)
 
 </div>
 
@@ -38,7 +38,7 @@ BusAI, presented in the application as **BusSure**, brings forecasting, journey 
 
 ## Research gap and project contribution
 
-The forecasting papers below study ways to capture relationships across a transport network and over time. BusAI explores the next application step: **using forecasts inside a passenger journey workflow**, where walking, waiting, crowd, transfers and disruptions affect the decision.
+The journal articles below study ways to capture relationships across a transport network and over time. BusAI explores the next application step: **using forecasts inside a passenger journey workflow**, where walking, waiting, crowd, transfers and disruptions affect the decision.
 
 The implemented contribution is a reproducible integration of graph forecasting, bounded timetable search, preference-based comparison and visible explanations. It includes data/model contracts, chronological evaluation and explicit fallback behaviour.
 
@@ -66,11 +66,11 @@ Travel-time nodes represent directed stop-to-stop segments; crowd nodes represen
 
 ### 2. Forecast segment travel time with DCRNN
 
-The [DCRNN V2 implementation](ml/travel_time/dcrnn_v2/model.py) combines forward/backward random-walk diffusion with graph-convolutional recurrent units and an encoder–decoder. This follows the architectural ideas in paper **[1]**, adapted to segment travel-time targets. It is a local implementation, not a claim of exact reproduction of the paper's experiments.
+The [DCRNN V2 implementation](ml/travel_time/dcrnn_v2/model.py) combines forward/backward random-walk diffusion with graph-convolutional recurrent units and an encoder–decoder. It adapts the DCRNN architecture to segment travel-time targets. Journal articles **[1], [2] and [3]** provide related graph-based forecasting and travel-time research; they are not the original DCRNN source or exact descriptions of this implementation.
 
 ### 3. Forecast crowd using an ST-GCN-inspired model
 
-The [crowd model](ml/synthetic/models.py) combines gated temporal convolutions with adjacency-based graph aggregation. Paper **[2]** motivates modelling spatial and temporal dependencies together. The implementation is a simplified adaptation for stop-level occupancy ratios; it does not reproduce the original spectral STGCN architecture exactly.
+The [crowd model](ml/synthetic/models.py) combines gated temporal convolutions with adjacency-based graph aggregation. The implementation is a simplified ST-GCN-inspired adaptation for stop-level occupancy ratios; it does not reproduce the original spectral STGCN architecture exactly. Journal articles **[5] and [6]** address related passenger-flow tasks and motivate future evaluation with observed passenger data; their models are not implemented here.
 
 ### 4. Search feasible journeys and explain the ranking
 
@@ -93,24 +93,26 @@ The adapter filters invalid transitions and implausible durations, preserves veh
 
 **Application data scope:** the runnable Chennai showcase uses a separate generated network and temporal histories for its integrated crowd/travel forecasts. The SUNT checkpoint powers the historical Salvador demonstration; it does not supply Chennai predictions. SUNT-based end-to-end crowd forecasting and live city deployment remain future work. See [dataset provenance](docs/datasets.md) for the separate data contracts.
 
-## 10 research papers and their connection to BusAI
+## 10 journal articles and their connection to BusAI
 
-The links below provide freely accessible papers through arXiv, an author-hosted PDF or open conference proceedings. Papers **[1]–[2]** directly motivate the implemented forecasting methods. Papers **[3]–[4]** provide graph-learning foundations; **[5]–[10]** are related methods for future comparison or extension. Citing them does not mean all ten models are implemented or benchmarked.
+This reading list contains **journal articles from IEEE and Springer Nature**. It includes original studies and one review article. Publisher links identify the journal and publication; free full-text links are included. For T-GCN, the free author manuscript is on arXiv, while the publication itself is an IEEE journal article.
 
-| Ref. | Paper and accessible link | Connection to this project |
-|---|---|---|
-| **[1]** | **Li et al. — Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting**, ICLR 2018. [Read paper](https://arxiv.org/abs/1707.01926) | Directed diffusion and recurrent temporal modelling underpin DCRNN V2 segment travel-time forecasting. |
-| **[2]** | **Yu, Yin & Zhu — Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting**, IJCAI 2018. [Read paper](https://arxiv.org/abs/1709.04875) | Motivates the crowd model's temporal convolution and graph aggregation; BusAI adapts the idea to a different prediction target. |
-| **[3]** | **Defferrard, Bresson & Vandergheynst — Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering**, NeurIPS 2016. [Read paper](https://arxiv.org/abs/1606.09375) | Background for localized graph filtering and the spectral graph-convolution literature behind STGCN. Chebyshev filtering is not implemented in BusAI's simplified crowd model. |
-| **[4]** | **Kipf & Welling — Semi-Supervised Classification with Graph Convolutional Networks**, ICLR 2017. [Read paper](https://arxiv.org/abs/1609.02907) | Foundational context for neighbourhood aggregation. Its node-classification task is distinct from BusAI's temporal regression tasks. |
-| **[5]** | **Zhao et al. — T-GCN: A Temporal Graph Convolutional Network for Traffic Prediction**, IEEE Transactions on Intelligent Transportation Systems, 2020. [Read paper](https://arxiv.org/abs/1811.05320) | A candidate comparison for combining graph convolution with gated recurrent units. Not currently benchmarked here. |
-| **[6]** | **Guo et al. — Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting**, AAAI 2019. [Read paper](https://guoshnbjtu.github.io/pdfs/AAAI2019-GuoS.2690.pdf) | Motivates future attention-based weighting of locations and temporal patterns. BusAI does not currently implement ASTGCN attention. |
-| **[7]** | **Wu et al. — Graph WaveNet for Deep Spatial-Temporal Graph Modeling**, IJCAI 2019. [Read paper](https://arxiv.org/abs/1906.00121) | Motivates comparing a learned adaptive graph and dilated temporal convolutions against the current supplied topology. |
-| **[8]** | **Zheng et al. — GMAN: A Graph Multi-Attention Network for Traffic Prediction**, AAAI 2020. [Read paper](https://arxiv.org/abs/1911.08415) | A future multi-attention forecasting comparison, especially for multi-step temporal dependencies. |
-| **[9]** | **Bai et al. — Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting**, NeurIPS 2020. [Read paper](https://arxiv.org/abs/2007.02842) | Motivates testing node-specific parameters and learned graph relationships instead of a fixed graph alone. |
-| **[10]** | **Song et al. — Spatial-Temporal Synchronous Graph Convolutional Networks: A New Framework for Spatial-Temporal Network Data Forecasting**, AAAI 2020. [Read paper](https://ojs.aaai.org/index.php/AAAI/article/download/5438/5294) | Motivates a future comparison with jointly modelled local spatial and temporal interactions. |
+These articles support the literature review, identify relevant design choices and suggest future comparisons. They do not replace the original architectural provenance of DCRNN/STGCN, and BusAI does not claim to implement or benchmark all ten methods.
 
-Most of these forecasting studies use road-sensor traffic targets. Applying their ideas to bus segment times or occupancy requires task-specific data preparation and evaluation; their published results do not transfer automatically to BusAI.
+| Ref. | Journal article | Publisher, journal and year | Connection to BusAI |
+|---|---|---|---|
+| **[1]** | **T-GCN: A Temporal Graph Convolutional Network for Traffic Prediction** — Zhao et al. [Publisher record](https://ieeexplore.ieee.org/document/8809901/) · [Free author manuscript](https://arxiv.org/abs/1811.05320) | **IEEE**, Transactions on Intelligent Transportation Systems, 21(9), 3848–3858, **2020**. DOI: `10.1109/TITS.2019.2935152`. | Combines graph convolution and recurrent temporal modelling. A relevant candidate baseline for BusAI's graph forecasting; T-GCN is not currently implemented. |
+| **[2]** | **FEN-MRMGCN: A Frontend-Enhanced Network Based on Multi-Relational Modeling GCN for Bus Arrival Time Prediction**. [Open-access article](https://ieeexplore.ieee.org/document/10820185/) | **IEEE Access**, 13, 5296–5307, **2025**. DOI: `10.1109/ACCESS.2024.3525357`. | Studies graph relationships in dense, multi-route bus networks. Motivates future multi-relational graphs and external traffic/weather inputs. |
+| **[3]** | **Gct-TTE: graph convolutional transformer for travel time estimation** — Mashurov et al. [Open-access article](https://link.springer.com/article/10.1186/s40537-023-00841-1) | **Springer Nature**, Journal of Big Data, 11, article 15, **2024**. DOI: `10.1186/s40537-023-00841-1`. | Provides a graph/Transformer travel-time approach for future comparison with the current recurrent segment model. Its multimodal inputs differ from BusAI's inputs. |
+| **[4]** | **Integrating knowledge representation into traffic prediction: a spatial–temporal graph neural network with adaptive fusion features** — Zhou et al. [Open-access article](https://link.springer.com/article/10.1007/s40747-023-01299-7) | **Springer Nature**, Complex & Intelligent Systems, 10, 2883–2900, **2024**. DOI: `10.1007/s40747-023-01299-7`. | Motivates integrating external context into forecasts. BusAI's disruption rules currently apply explicit scenario effects rather than learned knowledge-graph fusion. |
+| **[5]** | **Fedflow: a personalized federated learning framework for passenger flow prediction** — Rocco di Torrepadula et al. [Open-access article](https://link.springer.com/article/10.1007/s10994-025-06795-0) | **Springer Nature**, Machine Learning, 114, article 166, **2025**. DOI: `10.1007/s10994-025-06795-0`. | Directly addresses onboard passenger-flow forecasting across bus services. Informs future multi-operator crowd prediction; federated learning is not part of the current project. |
+| **[6]** | **Data-driven predictive modelling of stop-level public transit patterns** — Yusuf, Rasheed & Lindseth. [Open-access article](https://link.springer.com/article/10.1007/s11116-025-10689-4) | **Springer Nature**, Transportation, published online **2025**. DOI: `10.1007/s11116-025-10689-4`. | Uses observed passenger counts, feature preparation and SHAP analysis. Informs future crowd targets, tree-based baselines and explanations beyond BusAI's current ranking breakdown. |
+| **[7]** | **Real-time bus arrival delays analysis using seemingly unrelated regression model** — Zhang et al. [Open-access article](https://link.springer.com/article/10.1007/s11116-024-10507-3) | **Springer Nature**, Transportation, 53, 571–602, **2026**; first published online 2024. DOI: `10.1007/s11116-024-10507-3`. | Supports analysing bus-delay factors and testing interpretable regression alternatives. BusAI's reliability index remains a heuristic, not a fitted delay model. |
+| **[8]** | **Bus travel time prediction in mixed traffic: a multisource big data approach with multiple modelling strategies** — Montero-Lamas et al. [Open-access article](https://link.springer.com/article/10.1186/s12544-026-00815-3) | **Springer Nature**, European Transport Research Review, 18, article 57, **2026**. DOI: `10.1186/s12544-026-00815-3`. | Studies traffic, corridor and patronage factors using several modelling strategies. Motivates multisource input studies and classical baselines on matched BusAI data splits. |
+| **[9]** | **A data-driven system for cooperative-bus route planning based on generative adversarial network and metric learning** — Wang et al. [Open-access article](https://link.springer.com/article/10.1007/s10479-022-04842-w) | **Springer Nature**, Annals of Operations Research, 339, 427–453, **2024**; first published online 2022. DOI: `10.1007/s10479-022-04842-w`. | Connects demand prediction with operational route planning. BusAI instead compares passenger itineraries on supplied routes; GAN training and operator route optimization remain outside its implementation. |
+| **[10]** | **Data Science in Transportation Networks with Graph Neural Networks: A Review and Outlook** — Xue et al. [Open-access review article](https://link.springer.com/article/10.1007/s42421-025-00124-6) | **Springer Nature**, Data Science for Transportation, 7, article 10, **2025**. DOI: `10.1007/s42421-025-00124-6`. | Frames the graph-learning literature, prediction/operation tasks and open research opportunities. Supports the research-gap discussion rather than serving as an implemented algorithm. |
+
+**How the literature informs the project:** articles [1]–[4] motivate graph-based temporal forecasting and richer context; [5]–[6] guide passenger-flow data and evaluation; [7]–[8] guide delay analysis and baseline design; [9] connects predictions with planning; [10] provides the broader research context. Dataset, task and evaluation differences must be addressed before comparing their methods with BusAI.
 
 ## Experimental design and reproducibility
 
