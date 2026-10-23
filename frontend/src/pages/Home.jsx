@@ -2,13 +2,11 @@ import DevBeezLogo from '../components/DevBeezLogo.jsx';
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../services/api.js';
 import { connectLive, emptyState } from '../services/websocket.js';
-import { activeEvents, isStale, relevantBuses } from '../services/journey.js';
+import { activeEvents, isStale } from '../services/journey.js';
 import usePassengerLocation from '../hooks/usePassengerLocation.js';
 import DestinationSearch from '../components/DestinationSearch.jsx';
 import NearbyStops from '../components/NearbyStops.jsx';
-import JourneyOptionCard from '../components/JourneyOptionCard.jsx';
 import MapView from '../components/MapView.jsx';
-import LiveTwoBusComparison from '../components/LiveTwoBusComparison.jsx';
 import RoutesDirectory from '../components/RoutesDirectory.jsx';
 import MyJourneyPanel from '../components/MyJourneyPanel.jsx';
 import RouteStopTimeline from '../components/RouteStopTimeline.jsx';
@@ -103,11 +101,9 @@ export default function Home() {
   const staleSeconds = health?.stale_seconds || 45;
   const liveCount = Object.values(live.buses).filter(bus => !isStale(bus, now, staleSeconds)).length;
   const staleCount = Object.keys(live.buses).length - liveCount;
-  const routeCount = new Set((journeys?.options || []).map(option => option.route.route_id)).size;
   const selectedJourney = journeys?.options.find(option => option.option_id === selectedOption);
   const nearestLiveBuses = nearby[0] ? Object.values(live.buses).filter(bus => !isStale(bus, now, staleSeconds) && (bus.current_stop_id === nearby[0].stop_id || bus.next_stop_id === nearby[0].stop_id)) : [];
   const nearestSchedule = nearby[0]?.stop_id === selectedStop?.stop_id ? stopRouteSchedules[0] : null;
-  const displayedOptions=page==='AI Journey'?recommendedOptions:(journeys?.options||[]);
   useEffect(()=>{
     if(page!=='Timetable'){return;}
     const routeId=selectedJourney?.route.route_id||catalogRoute?.route_id;
@@ -137,7 +133,7 @@ export default function Home() {
   }
   async function openCatalogRoute(route) {
     setCatalogRoute(route);setSelectedOption(null);setRouteSequence([]);setRouteGeometry([]);setJourneyError('');
-    try { const detail=await api.routeInfo(route.route_id);const tripId=detail.trip_ids?.[0];if(!tripId){setJourneyError('This GTFS route has no trips.');return;}setActiveTripId(tripId);const data=await api.tripStops(tripId);setRouteSequence(data.stops.map(row=>({...stops[row.stop_id],...row})).filter(stop=>Number.isFinite(stop.latitude)&&Number.isFinite(stop.longitude)));setRouteGeometry(data.shape||[]); }
+    try { const detail=await api.routeInfo(route.route_id);const tripId=detail.trip_ids?.[0];if(!tripId){setCatalogRoute(null);setActiveTripId('');return;}setActiveTripId(tripId);const data=await api.tripStops(tripId);setRouteSequence(data.stops.map(row=>({...stops[row.stop_id],...row})).filter(stop=>Number.isFinite(stop.latitude)&&Number.isFinite(stop.longitude)));setRouteGeometry(data.shape||[]); }
     catch(error){setJourneyError(error.message);}
   }
   function interpretIntent(text) {
@@ -172,10 +168,6 @@ export default function Home() {
       <div className="map-caption"><span>SIMULATOR markers are test vehicles, never official live MTC/TNSTC buses.</span><span>{events.length} active network {events.length === 1 ? 'event' : 'events'}</span></div>
     </section>}
     {events.length > 0 && <section className="event-strip" aria-label="Network events">{events.map(event => <div key={event.event_id} data-testid="network-event"><b>! {event.event_type.replaceAll('_', ' ')}</b><span>{event.description}</span>{event.severity && <small>{event.severity}</small>}{event.route_id && <small>Route {event.route_id}</small>}</div>)}</section>}
-    {(page==='Home')&&<section className="journeys-section" aria-labelledby="journeys-title"><div className="section-label"><div><span className="eyebrow">KNOW YOUR OPTIONS</span><h2 id="journeys-title">{page==='AI Journey'?'Recommended direct journeys':routeCount > 1 ? `${routeCount} routes to explore` : routeCount === 1 ? 'One route. See each bus.' : 'Your journey options'}</h2></div><span className="direct-tag">DIRECT GTFS ROUTES</span></div>
-      <p className="scope-note">GTFS connections, not a service guarantee. Service dates are not evaluated. No ETA or crowd predictions.</p>
-      {journeyBusy ? <div className="journey-skeletons" role="status" aria-label="Finding GTFS journey options">{[0,1].map(index=><div className="journey-skeleton" key={index}><i/><i/><i/><i/></div>)}</div> : journeyError ? <p role="alert" className="error-message">{journeyError}</p> : journeys?.options.length ? <>{page==='AI Journey'&&<section className="comparison-wrap" aria-label="Journey comparison"><div className="comparison-title"><div><span className="eyebrow">SIDE BY SIDE</span><h3>Compare your options</h3></div><span className="recommendation-note">Recommendation updates when verified prediction data is connected.</span></div><div className="comparison-grid"><div className="comparison-labels"><b>Journey detail</b><span>Walk to boarding</span><span>Waiting time</span><span>Bus travel</span><span>Total journey</span><span>Crowd</span><span>Reliability</span><span>Delay risk</span><span>Transfers</span></div>{recommendedOptions.map((option,index)=><button key={option.option_id} className={`comparison-column ${selectedOption===option.option_id?'active':''}`} onClick={()=>chooseOption(option)}><strong>OPTION {index===0?'A':'B'} · {option.route.route_short_name||option.route.route_id}</strong><span>~{option.origin_stop.estimated_walking_minutes.toFixed(1)} min · GTFS walk estimate</span><span>Awaiting live/model data</span><span>GTFS schedule pending</span><span>Awaiting schedule</span><span>ST-GCN pending</span><span>Reliability model pending</span><span>Delay model pending</span><span>0 · direct GTFS</span></button>)}</div><p className="preference-match">{preference?`Preference selected: ${preference.replaceAll('_',' ')}. Model-dependent matching is awaiting integration.`:'Select a preference to tell BusSure what matters most.'}</p></section>}<div className="journey-grid">{displayedOptions.map((option,index) => <JourneyOptionCard key={option.option_id} option={option} index={index} buses={connected ? relevantBuses(option, live.buses, now, journeys.stale_seconds, journeys.boarding_radius_meters) : []} stops={stops} selected={selectedOption === option.option_id} onSelect={() => chooseOption(option)} onDetails={()=>openRoute(option)} connected={connected} reason={page==='AI Journey'?(index===0?'Shortest GTFS walk among distinct routes':'Next shortest GTFS walk · alternative route'):undefined}/>)}</div>{page==='AI Journey'&&<LiveTwoBusComparison options={recommendedOptions} live={live} stops={stops} connected={connected} now={now} staleSeconds={staleSeconds} radius={journeys.boarding_radius_meters}/>}</> : <div className="empty-state"><span className="empty-symbol">↗</span><h3>{journeys ? 'No direct route found' : 'Where would you like to go?'}</h3><p>{journeys?.message || 'Choose your location and a GTFS destination stop to see your options here.'}</p></div>}
-    </section>}
     {page==='My Journey'&&selectedJourney&&<MyJourneyPanel journey={selectedJourney} sequence={routeSequence} tripId={activeTripId} dataSource={catalog?.data_source} onOpen={()=>setPage('AI Journey')} onTimetable={()=>setPage('Timetable')}/> }
     {page==='Routes'&&<RoutesDirectory catalog={catalog} selected={catalogRoute} stops={stops} tripId={activeTripId} sequence={routeSequence} error={journeyError} onSelect={openCatalogRoute} onTimetable={()=>setPage('Timetable')}/>}
     {page==='Timetable'&&catalogRoute&&<section className="route-detail-panel catalog-timetable"><div className="route-detail-heading"><div><span className="eyebrow">{catalog?.data_source==='SAMPLE'?'SAMPLE GTFS SCHEDULE':'GTFS SCHEDULE'}</span><h2>Timetable · {catalogRoute.route_short_name||catalogRoute.route_id}</h2><p>{catalogRoute.route_long_name}</p></div><button className="route-details-button" onClick={()=>setPage('Routes')}>Back to routes <span>←</span></button></div><p className="schedule-source">Scheduled GTFS departures at the selected boarding stop. Service calendars aren’t evaluated; predictions await model integration.</p>{scheduleBusy?<p className="muted">Loading GTFS departures…</p>:scheduleError?<p role="alert" className="error-message">{scheduleError}</p>:scheduleRows.length?<ol className="schedule-list">{scheduleRows.map((row,index)=><li key={`${row.trip_id}-${index}`}><time>{row.departure_time||row.arrival_time||'Time unavailable'}</time><span>{stops[row.stop_id]?.stop_name||row.stop_id}<small>Trip {row.trip_id} · service {row.service_id}</small></span></li>)}</ol>:<p className="muted">No GTFS departures are available for this stop.</p>}</section>}
