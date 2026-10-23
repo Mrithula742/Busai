@@ -3,8 +3,9 @@ from typing import Literal,Optional
 from fastapi import APIRouter,Request,HTTPException,Query
 from pydantic import BaseModel,Field,ConfigDict,field_validator
 import anyio
-from .ai import JourneyInput,active_network
+from .ai import JourneyInput,active_network,network_snapshot
 from ..services.forecast_service import forecast
+from ..services.journey_profiles import illustrative_predictions
 from ..services.ai_journey_service import AIJourneyService,IST
 from ..services.showcase_service import what_if
 from ..services.assistant_service import interpret
@@ -15,11 +16,7 @@ from ..utils.time_utils import utc_now
 router=APIRouter()
 
 def snapshot(request):
-    gtfs=active_network(request)
-    request.app.state.gps.refresh_stale();request.app.state.events.expire()
-    store=BusStateService(request.app.state.store.stale_seconds)
-    store.buses=dict(request.app.state.store.buses)
-    return gtfs,store,[e.model_dump(mode='python') for e in request.app.state.events.list()]
+    return network_snapshot(request)
 
 class WhatIfInput(BaseModel):
     model_config=ConfigDict(extra='forbid',allow_inf_nan=False)
@@ -34,7 +31,7 @@ class WhatIfInput(BaseModel):
 async def preview(body:WhatIfInput,request:Request):
     gtfs,store,events=snapshot(request)
     local=body.journey.departure_time.astimezone(IST)
-    try:return await anyio.to_thread.run_sync(lambda:what_if(gtfs,store,events,body,forecast(local.hour,local.minute)))
+    try:return await anyio.to_thread.run_sync(lambda:what_if(gtfs,store,events,body,illustrative_predictions(forecast(local.hour,local.minute))))
     except ValueError as exc:raise HTTPException(422,str(exc)) from exc
 
 class AssistantInput(BaseModel):

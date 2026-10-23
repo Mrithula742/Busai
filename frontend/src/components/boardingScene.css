@@ -1,0 +1,38 @@
+.boarding-art{height:510px}
+.boarding-illustration{position:absolute;width:116%;max-width:none;height:auto;left:-8%;top:54px;overflow:visible}
+.boarding-art .sun-disc{opacity:.65}
+.boarding-art .chip-live{top:94px;right:0}
+.boarding-art .chip-stop{bottom:48px;left:0}
+.boarding-caption{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.5px;color:#819087}
+.coach-cycle{animation:coach-journey 12s cubic-bezier(.35,0,.25,1) infinite}
+.coach-suspension{animation:coach-idle 3s ease-in-out infinite}
+.coach-door{transform-box:fill-box;animation:coach-door-open 12s ease-in-out infinite}
+.door-left{transform-origin:left center}
+.door-right{transform-origin:right center}
+.coach-wheel{animation:coach-wheels 12s linear infinite}
+.boarding-passenger{opacity:0;animation:passenger-board 12s linear infinite}
+.passenger-2{animation-delay:.8s}
+.passenger-3{animation-delay:1.6s}
+.passenger-leg{stroke:var(--trousers);stroke-width:6;stroke-linecap:round;fill:none;transform-origin:0 -24px;animation:passenger-step .4s ease-in-out infinite alternate}
+.leg-back{animation-direction:alternate-reverse}
+.passenger-leg .shoe{stroke:#26352f;stroke-width:4}
+.boarding-status{min-width:125px;animation:boarding-chip-float 5s ease-in-out infinite}
+.boarding-status>span:not(.live-dot){grid-area:1/1}
+.boarding-status{display:grid;grid-template-columns:7px 1fr}
+.boarding-status>.live-dot{grid-area:1/1}
+.boarding-status>span:not(.live-dot){grid-area:1/2}
+.status-arriving{animation:status-arrive 12s step-end infinite}
+.status-boarding{animation:status-board 12s step-end infinite}
+.status-departing{animation:status-depart 12s step-end infinite}
+@keyframes coach-journey{0%{transform:translateX(-140px);opacity:0}12%,76%{transform:translateX(0);opacity:1}94%,100%{transform:translateX(180px);opacity:0}}
+@keyframes coach-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes coach-door-open{0%,16%,73%,100%{transform:scaleX(1)}22%,67%{transform:scaleX(.12)}}
+@keyframes coach-wheels{0%{transform:rotate(-240deg)}12%,76%{transform:rotate(0)}96%,100%{transform:rotate(360deg)}}
+@keyframes passenger-board{0%,19%{transform:translate(180px,358px);opacity:0}21%{transform:translate(190px,358px);opacity:1}32%{transform:translate(402px,358px);opacity:1}35%{transform:translate(444px,338px);opacity:1}37%,100%{transform:translate(449px,326px) scale(.87);opacity:0}}
+@keyframes passenger-step{from{transform:rotate(-15deg)}to{transform:rotate(15deg)}}
+@keyframes boarding-chip-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes status-arrive{0%{opacity:1}22%{opacity:0}100%{opacity:1}}
+@keyframes status-board{0%{opacity:0}22%{opacity:1}72%,100%{opacity:0}}
+@keyframes status-depart{0%{opacity:0}72%{opacity:1}100%{opacity:0}}
+@media(max-width:760px){.boarding-art{height:370px}.boarding-illustration{top:28px;width:112%;left:-6%}.boarding-art .chip-live{top:40px;right:0}.boarding-art .chip-stop{bottom:32px;padding:8px 10px}.boarding-caption{bottom:0;font-size:9px}.boarding-art .route-ribbon{top:10px;font-size:8px;padding:9px 11px}}
+@media(prefers-reduced-motion:reduce){.boarding-art *{animation:none!important}.coach-cycle{opacity:1;transform:none}.boarding-passenger{opacity:1;transform:translate(370px,358px)}.passenger-2{transform:translate(330px,358px)}.passenger-3{transform:translate(290px,358px)}.status-arriving,.status-departing{display:none}}

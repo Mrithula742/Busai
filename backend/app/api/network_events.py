@@ -21,6 +21,9 @@ async def list_events(request: Request, include_cleared: bool = False):
 @router.post('/api/network-events/{event_id}/clear', response_model=NetworkEvent)
 async def clear_event(event_id: str, request: Request):
     try:
+        demo_events = getattr(request.app.state, 'ai_events', None)
+        if demo_events is not None and any(event.event_id == event_id for event in demo_events.list(True)):
+            return demo_events.clear(event_id)
         return request.app.state.events.clear(event_id)
     except KeyError as exc:
         raise HTTPException(404, 'Unknown event_id') from exc

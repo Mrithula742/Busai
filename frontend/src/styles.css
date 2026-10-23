@@ -148,3 +148,39 @@
   .app-page-timetable .schedule-list li:last-child time{color:#ce8017}
   .nearby-page,.route-detail-panel,.routes-directory,.my-journey-panel{border-radius:13px}
 }
+
+/* Frame the original padded artwork as a compact header logo. */
+.devbeez-logo{display:block;position:relative;flex:0 0 72px;width:72px;height:68px;overflow:hidden;background:#fff;border:1px solid #e3e8e2;border-radius:12px;box-shadow:0 3px 10px rgba(32,61,55,.08),0 1px 2px rgba(32,61,55,.04)}
+.devbeez-logo img{position:absolute;display:block;width:128px;height:128px;max-width:none;left:50%;top:50%;transform:translate(-50%,-41%)}
+.landing-header-right{display:flex;align-items:center;gap:28px}
+.app-header .header-right{gap:16px}
+@media(max-width:760px){
+  .devbeez-logo{flex-basis:62px;width:62px;height:60px;border-radius:10px}
+  .devbeez-logo img{width:110px;height:110px}
+  .landing-header-right{gap:12px}
+  .landing-header-right .landing-tag{display:none}
+  .app-header .header-right{gap:10px}
+}
+
+.transit-stop-marker{background:none;border:0}
+.transit-stop-marker>span{display:grid;place-items:center;width:30px;height:32px;background:#fff;border:2px solid #176b5b;border-radius:9px 9px 9px 2px;transform:rotate(-12deg);box-shadow:0 3px 9px #163b352b;transition:transform .18s,box-shadow .18s}
+.transit-stop-marker svg{width:21px;height:21px;fill:none;stroke:#176b5b;stroke-width:1.7;transform:rotate(12deg)}
+.transit-stop-marker:hover>span,.transit-stop-marker.is-selected>span{background:#176b5b;transform:rotate(-12deg) translateY(-3px);box-shadow:0 5px 14px #163b3540}
+.transit-stop-marker:hover svg,.transit-stop-marker.is-selected svg{stroke:white}
+.transit-stop-tooltip{border:1px solid #dce6dd;border-radius:12px;padding:13px 16px;box-shadow:0 8px 28px #163b3520;white-space:normal;min-width:190px;max-width:300px}
+.stop-marker-details{display:flex;flex-direction:column;gap:5px;min-width:160px;color:#253f35}
+.stop-marker-details>small{font-size:8px;letter-spacing:1.5px;color:#6a8073}
+.stop-marker-details>strong{font-size:13px;line-height:1.4}
+.stop-marker-details>span{font-size:11px;color:#6b7f73}
+.stop-marker-routes{display:flex;flex-wrap:wrap;gap:5px;max-width:260px;max-height:110px;overflow:auto;margin-top:5px}
+.stop-marker-routes b{background:#edf5ee;color:#176b5b;border:1px solid #d9e8db;border-radius:5px;padding:3px 7px;font-size:11px}
+
+.route-search-label{max-width:480px;margin:20px 0 10px;color:#52695c;font-size:12px}.route-directory-search{display:block;width:100%;margin-top:8px;padding:12px 14px;border:1px solid #dce5dc;border-radius:9px;background:#fafcf9;color:#203d37}
+
+/* Quiet stop groups keep the street map readable at city scale. */
+.stop-cluster-marker{background:none;border:0}
+.stop-cluster-marker>span{display:grid;place-items:center;width:38px;height:38px;border:5px solid #d5e8dce6;border-radius:50%;background:#f9fcf8;color:#27644f;font-size:12px;font-weight:700;box-shadow:0 2px 5px #203d371c;transition:background .15s,transform .15s}
+.stop-cluster-marker:hover>span{background:#176b5b;color:#fff;transform:scale(1.08)}
+.transit-stop-marker>span{width:26px;height:28px;border-width:1.5px;border-radius:7px;transform:none;box-shadow:0 2px 5px #163b351c}
+.transit-stop-marker svg{width:18px;height:18px;transform:none}
+.transit-stop-marker:hover>span,.transit-stop-marker.is-selected>span{transform:translateY(-2px)}

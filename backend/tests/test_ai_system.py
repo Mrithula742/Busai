@@ -212,8 +212,33 @@ class APIs(unittest.TestCase):
         response=self.client.post('/api/simulation/scenarios',json=dict(route_id='SYN_A',event_type='ROAD_BLOCK'));self.assertEqual(response.status_code,201)
         eid=response.json()['event_id'];self.assertEqual(self.client.post('/api/network-events/'+eid+'/clear').status_code,200)
         self.assertEqual(self.client.get('/api/models/insights').json()['status'],'LOADED_AND_VALIDATED')
+    def test_real_gtfs_coexists_with_isolated_model_demo(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as directory:
+            feed=Path(directory)/'gtfs'
+            shutil.copytree(ROOT/'simulator/routes/sample_gtfs',feed)
+            (feed/'SAMPLE').unlink(missing_ok=True)
+            for file in feed.glob('*.txt'):
+                file.write_text(file.read_text().replace('SAMPLE_R1','MTC_REAL_1'))
+            with TestClient(create_app(Settings(gtfs_dir=feed))) as c:
+                self.assertEqual(c.get('/api/transit/catalog').json()['data_source'],'GTFS')
+                self.assertNotIn('MAD',c.app.state.gtfs.stops)
+                body=dict(origin='MAD',destination='CEN',departure_time=ASOF.isoformat())
+                response=c.post('/api/ai/journeys',json=body)
+                self.assertEqual(response.status_code,200,response.text)
+                self.assertEqual(response.json()['data_source'],'SYNTHETIC')
+                self.assertTrue(response.json()['options'])
+                self.assertEqual(c.get('/api/twin').status_code,200)
+                scenario=c.post('/api/simulation/scenarios',json=dict(route_id='SYN_A',event_type='ROAD_BLOCK'))
+                self.assertEqual(scenario.status_code,201,scenario.text)
+                self.assertEqual(c.get('/api/snapshot').json()['network_events'],[])
+                self.assertEqual(len(c.app.state.ai_events.list()),1)
+                self.assertEqual(c.post('/api/network-events/'+scenario.json()['event_id']+'/clear').status_code,200)
+                preview=c.post('/api/ai/what-if',json=dict(journey=body,route_id='SYN_A',traffic_factor=1.2))
+                self.assertEqual(preview.status_code,200,preview.text)
+
     def test_wrong_active_network_rejected(self):
-        with TestClient(create_app(Settings(gtfs_dir=ROOT/'simulator/routes/sample_gtfs'))) as c:
+        with patch('app.main.load_gtfs', return_value=GTFSService(ROOT/'simulator/routes/sample_gtfs',sample=True)), TestClient(create_app(Settings())) as c:
             r=c.post('/api/ai/journeys',json=dict(origin='MAD',destination='CEN',departure_time=ASOF.isoformat()));self.assertEqual(r.status_code,409)
 
     def test_forced_fallback_is_visible_in_api_and_insights(self):

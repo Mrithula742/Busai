@@ -9,10 +9,14 @@ def compare(options, preference):
         return []
     fields={'faster':'total_minutes','less_crowd':'occupancy_ratio','most_reliable':'reliability_score'}
     result=[]
+    chosen=set()
     fastest=min(o['total_minutes'] for o in options)
     for category,field in fields.items():
-        winner=min(options,key=lambda o:((-o[field] if category=='most_reliable' else o[field]),o['total_minutes'],o['transfers'],o['option_id']))
-        result.append(dict(category=category,option=winner,difference_from_fastest_minutes=round(winner['total_minutes']-fastest,1),factors=dict(total_minutes=winner['total_minutes'],wait_minutes=winner['wait_minutes'],transfers=winner['transfers'],occupancy_ratio=winner['occupancy_ratio'],reliability_score=winner['reliability_score'],penalties=winner['reliability_penalties']),explanation=f"Selected by {'highest' if category=='most_reliable' else 'lowest'} {field.replace('_',' ')} among {len(options)} returned feasible journeys; ties use duration and transfers."))
+        remaining=[o for o in options if o['option_id'] not in chosen] or options
+        winner=min(remaining,key=lambda o:((-o[field] if category=='most_reliable' else o[field]),o['total_minutes'],o['transfers'],o['option_id']))
+        alternative=any((o[field]>winner[field] if category=='most_reliable' else o[field]<winner[field]) for o in options)
+        chosen.add(winner['option_id'])
+        result.append(dict(category=category,is_alternative=alternative,option=winner,difference_from_fastest_minutes=round(winner['total_minutes']-fastest,1),factors=dict(total_minutes=winner['total_minutes'],wait_minutes=winner['wait_minutes'],transfers=winner['transfers'],occupancy_ratio=winner['occupancy_ratio'],reliability_score=winner['reliability_score'],penalties=winner['reliability_penalties']),explanation=f"Selected by {'highest' if category=='most_reliable' else 'lowest'} {field.replace('_',' ')} among {len(remaining)} distinct journey choices; ties use duration and transfers."))
     return result
 
 
@@ -28,7 +32,8 @@ def what_if(gtfs,store,events,body,predictions):
     if not keys:raise ValueError('Unknown synthetic route')
     for key in keys:
         adjusted['eta'][key]=adjusted['eta'][key]*body.traffic_factor+body.delay_minutes/len(keys)
-    adjusted['scenario_demand']={body.route_id:body.demand_factor}
+    adjusted['scenario_demand']=dict(adjusted.get('scenario_demand',{}))
+    adjusted['scenario_demand'][body.route_id]=adjusted['scenario_demand'].get(body.route_id,1)*body.demand_factor
     changes=(body.traffic_factor!=1 or body.delay_minutes>0 or body.demand_factor>1 or body.roadblock)
     projected=list(events)
     if changes:

@@ -138,8 +138,11 @@ class AIJourneyService:
                     if rid in used or board not in seq:continue
                     a=seq.index(board)
                     if a==len(seq)-1:continue
-                    scheduled=self.next_trip(rid,board,ready,date,forecast)
-                    tracked=self.live_arrival(rid,seq,a,forecast,ready,date)
+                    access=forecast.get('access_walk_minutes',{}).get(rid,0) if not legs and body.latitude is None else 0
+                    boarding_walk=walk+access
+                    route_ready=ready+access
+                    scheduled=self.next_trip(rid,board,route_ready,date,forecast)
+                    tracked=self.live_arrival(rid,seq,a,forecast,route_ready,date)
                     chosen=None
                     if scheduled:chosen=(scheduled[0],scheduled[1],None)
                     if tracked and (not chosen or tracked[0]<chosen[0]):chosen=(tracked[0],tracked[1].trip_id,tracked[1])
@@ -172,11 +175,14 @@ class AIJourneyService:
                             first=next((i for i,p in enumerate(shape) if haversine_meters(*p,stops[board]['latitude'],stops[board]['longitude'])<1),None)
                             last=next((i for i,p in enumerate(shape) if first is not None and i>first and haversine_meters(*p,stops[target]['latitude'],stops[target]['longitude'])<1),None)
                             if first is not None and last is not None:geometry=shape[first:last+1]
-                        leg=dict(geometry=geometry,route_id=rid,trip_id=trip,stop_ids=list(seq[a:b+1]),boarding_stop=stops[board]['stop_name'],alighting_stop=stops[target]['stop_name'],departure_time=(midnight+timedelta(minutes=depart)).isoformat(),arrival_time=(midnight+timedelta(minutes=finish)).isoformat(),wait_minutes=round(depart-clock-walk,3),ride_minutes=round(elapsed,3),bus=bus_data,wait_source='GPS_REMAINING_SEGMENT_ESTIMATE' if bus else 'SYNTHETIC_TIMETABLE',transfer_buffer_minutes=buffer)
+                        leg=dict(geometry=geometry,route_id=rid,trip_id=trip,stop_ids=list(seq[a:b+1]),boarding_stop=stops[board]['stop_name'],alighting_stop=stops[target]['stop_name'],departure_time=(midnight+timedelta(minutes=depart)).isoformat(),arrival_time=(midnight+timedelta(minutes=finish)).isoformat(),wait_minutes=round(depart-clock-boarding_walk,3),ride_minutes=round(elapsed,3),bus=bus_data,wait_source='GPS_REMAINING_SEGMENT_ESTIMATE' if bus else 'SYNTHETIC_TIMETABLE',transfer_buffer_minutes=buffer)
                         newsteps=list(steps)
+                        if access:
+                            newsteps=[step for step in newsteps if not (step['type']=='WALK' and step.get('minutes')==0)]
+                            newsteps.append(dict(type='WALK',minutes=access,distance_meters=round(access*84),instruction=f"Walk to the boarding point at {stops[board]['stop_name']}"))
                         if walk:newsteps.append(dict(type='TRANSFER_WALK',minutes=round(walk,2),distance_meters=round(meters),instruction=f"Walk approximately {round(meters)} m from {stops[sid]['stop_name']} to {stops[board]['stop_name']}; straight-line guidance, no pedestrian route validation"))
-                        newsteps.extend([dict(type='WAIT',minutes=round(depart-clock-walk,2),instruction=f"Wait at {stops[board]['stop_name']} (includes {buffer} min transfer buffer)"),dict(type='BOARD',instruction=f'Board {rid} · trip {trip}'),dict(type='RIDE',minutes=round(elapsed,2),instruction=f"Ride to {stops[target]['stop_name']}"),dict(type='ALIGHT',instruction=f"Alight at {stops[target]['stop_name']}")])
-                        visit(target,finish,legs+[leg],newsteps,visited|set(seq[a:b+1]),used|{rid},walking+walk,delay+route_delay,max(crowd,load),events+route_events)
+                        newsteps.extend([dict(type='WAIT',minutes=round(depart-clock-boarding_walk,2),instruction=f"Wait at {stops[board]['stop_name']} (includes {buffer} min transfer buffer)"),dict(type='BOARD',instruction=f'Board {rid} · trip {trip}'),dict(type='RIDE',minutes=round(elapsed,2),instruction=f"Ride to {stops[target]['stop_name']}"),dict(type='ALIGHT',instruction=f"Alight at {stops[target]['stop_name']}")])
+                        visit(target,finish,legs+[leg],newsteps,visited|set(seq[a:b+1]),used|{rid},walking+boarding_walk,delay+route_delay,max(crowd,load),events+route_events)
         for sid,walk,distance in origins:
             initial=[dict(type='WALK',minutes=round(walk,2),distance_meters=round(distance),instruction=f"Walk to {stops[sid]['stop_name']}; approximate straight-line guidance")]
             visit(sid,start+walk,[],initial,{sid},set(),walk,0,0,[])

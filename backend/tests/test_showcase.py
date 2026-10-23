@@ -12,6 +12,7 @@ from app.services.forecast_service import get_bundle,forecast
 from app.services.assistant_service import interpret
 from app.api.synthetic import dataset
 from app.services.ai_journey_service import IST
+from app.services.gtfs_service import GTFSService
 from simulator.multi_bus_simulator import SimulatedBus
 
 NOW=datetime(2026,10,17,8,tzinfo=IST)
@@ -19,6 +20,9 @@ QUERY=dict(origin='MAD',destination='CEN',departure_time=NOW.isoformat(),max_tra
 
 class ShowcaseAPIs(unittest.TestCase):
     def setUp(self):
+        self.feed_patch=patch('app.main.load_gtfs',return_value=GTFSService(ROOT/'datasets/synthetic_chennai'))
+        self.feed_patch.start()
+        self.addCleanup(self.feed_patch.stop)
         self.ctx=TestClient(create_app(Settings(gtfs_dir=ROOT/'datasets/synthetic_chennai')));self.client=self.ctx.__enter__()
     def tearDown(self):self.ctx.__exit__(None,None,None)
     def plan(self):return self.client.post('/api/ai/journeys',json=QUERY).json()
@@ -26,10 +30,24 @@ class ShowcaseAPIs(unittest.TestCase):
         response=self.client.post('/api/ai/what-if',json=dict(journey=QUERY,route_id='SYN_A',**settings));self.assertEqual(response.status_code,200,response.text);return response.json()
     def test_comparison_uses_computed_factors(self):
         r=self.plan();self.assertEqual(len(r['comparison']),3)
+        remaining=list(r['options'])
         for card in r['comparison']:
-            values=[o[{'faster':'total_minutes','less_crowd':'occupancy_ratio','most_reliable':'reliability_score'}[card['category']]] for o in r['options']]
+            if not remaining:remaining=list(r['options'])
+            values=[o[{'faster':'total_minutes','less_crowd':'occupancy_ratio','most_reliable':'reliability_score'}[card['category']]] for o in remaining]
             actual=card['option'][{'faster':'total_minutes','less_crowd':'occupancy_ratio','most_reliable':'reliability_score'}[card['category']]]
             self.assertEqual(actual,max(values) if card['category']=='most_reliable' else min(values))
+            remaining=[o for o in remaining if o['option_id']!=card['option']['option_id']]
+    def test_illustrative_access_and_crowd_are_route_specific_and_consistent(self):
+        result=self.plan()
+        options=result['options']
+        self.assertGreater(len({o['walking_minutes'] for o in options}),1)
+        self.assertGreater(len({o['occupancy_ratio'] for o in options}),1)
+        for option in options:
+            self.assertGreater(option['walking_minutes'],0)
+            self.assertGreaterEqual(option['wait_minutes'],0)
+            self.assertAlmostEqual(option['total_minutes'],option['walking_minutes']+option['wait_minutes']+option['ride_minutes'],delta=.2)
+            self.assertAlmostEqual(option['walking_minutes'],sum(step.get('minutes',0) for step in option['itinerary'] if step['type'] in ('WALK','TRANSFER_WALK')),delta=.1)
+
     def test_what_if_changes_only_target_route_and_never_mutates_models(self):
         original=dict(forecast(8,0)['eta']);r=self.preview(traffic_factor=1.6,demand_factor=1.5,delay_minutes=10)
         before={o['route_id']:o for o in r['before']['options']};after={o['route_id']:o for o in r['after']['options']}

@@ -7,6 +7,7 @@ from pydantic import BaseModel,Field,ConfigDict,model_validator
 from ..config import ROOT
 from ..services.forecast_service import forecast,get_bundle
 from ..services.ai_journey_service import AIJourneyService
+from ..services.journey_profiles import illustrative_predictions
 from ..schemas.network_event import NetworkEvent
 from ..utils.time_utils import utc_now
 
@@ -39,7 +40,7 @@ class JourneyInput(BaseModel):
 
 def active_network(request):
     from .synthetic import dataset
-    _,stops,_,_=dataset();gtfs=request.app.state.gtfs
+    _,stops,_,_=dataset();gtfs=getattr(request.app.state,'ai_gtfs',request.app.state.gtfs)
     expected={s['stop_id']:(float(s['stop_lat']),float(s['stop_lon'])) for s in stops}
     if not gtfs.loaded or set(gtfs.stops)!=set(expected) or not {'SYN_A','SYN_B','SYN_C'}.issubset(gtfs.routes):
         raise HTTPException(409,'AI planner requires the synthetic network. Restart with GTFS_DIR=datasets/synthetic_chennai.')
@@ -54,19 +55,25 @@ def active_network(request):
             if rid not in gtfs.route_trips or any([r['stop_id'] for r in gtfs.trip_stops[t]]!=seq for t in gtfs.route_trips[rid]):raise HTTPException(409,'Active trip graph differs from synthetic model mapping')
     return gtfs
 
+def network_snapshot(request):
+    gtfs=active_network(request)
+    isolated=hasattr(request.app.state,'ai_gtfs')
+    source=request.app.state.ai_store if isolated else request.app.state.store
+    event_service=request.app.state.ai_events if isolated else request.app.state.events
+    if not isolated:request.app.state.gps.refresh_stale()
+    event_service.expire()
+    from ..services.bus_state_service import BusStateService
+    store=BusStateService(source.stale_seconds)
+    store.buses=dict(source.buses)
+    return gtfs,store,[e.model_dump(mode='python') for e in event_service.list()]
+
 @router.post('/api/ai/journeys')
 async def plan(body:JourneyInput,request:Request):
-    gtfs=active_network(request)
-    request.app.state.gps.refresh_stale();request.app.state.events.expire()
-    # Snapshot the in-memory records before worker-thread model inference/search.
-    from ..services.bus_state_service import BusStateService
-    store=BusStateService(request.app.state.store.stale_seconds)
-    store.buses=dict(request.app.state.store.buses)
-    events=[e.model_dump(mode='python') for e in request.app.state.events.list()]
+    gtfs,store,events=network_snapshot(request)
     local=body.departure_time.astimezone(timezone(timedelta(hours=5,minutes=30)))
     import anyio
     from ..services.showcase_service import enrich
-    try:return await anyio.to_thread.run_sync(lambda: enrich(AIJourneyService(gtfs,store,events).search(body,forecast(local.hour,local.minute)),body.preference))
+    try:return await anyio.to_thread.run_sync(lambda: enrich(AIJourneyService(gtfs,store,events).search(body,illustrative_predictions(forecast(local.hour,local.minute))),body.preference))
     except ValueError as exc:raise HTTPException(422,str(exc)) from exc
 
 class ForecastInput(BaseModel):
@@ -119,4 +126,4 @@ async def scenario(body:ScenarioInput,request:Request):
     stop=gtfs.stops[gtfs.trip_stops[gtfs.route_trips[body.route_id][0]][0]['stop_id']]
     now=utc_now()
     event=NetworkEvent(event_id='SYN_SCENARIO_'+uuid4().hex[:12],event_type=body.event_type,route_id=body.route_id,severity=body.severity,latitude=stop['latitude'],longitude=stop['longitude'],start_time=now,end_time=now+timedelta(minutes=body.duration_minutes),description='SYNTHETIC SCENARIO: '+body.event_type.replace('_',' '))
-    return request.app.state.events.create(event)
+    return getattr(request.app.state,'ai_events',request.app.state.events).create(event)

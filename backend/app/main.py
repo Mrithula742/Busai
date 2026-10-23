@@ -9,7 +9,7 @@ from .api import synthetic, ai, showcase
 from .services.journey_service import JourneyService
 from .services.bus_state_service import BusStateService
 from .services.gps_service import GPSService
-from .services.gtfs_service import load_gtfs
+from .services.gtfs_service import GTFSService, load_gtfs
 from .services.network_event_service import NetworkEventService
 from .services.stop_progression_service import StopProgressionService
 from .services.nearby_stop_service import NearbyStopService
@@ -28,6 +28,11 @@ def create_app(settings=None):
         app.state.gps = GPSService(app.state.store, app.state.gtfs, app.state.manager, app.state.progression)
         app.state.events = NetworkEventService(app.state.manager, app.state.gtfs)
         app.state.nearby = NearbyStopService(app.state.gtfs, settings.walking_speed_mps)
+        # Keep model replay on its trained graph while the public map uses real GTFS.
+        if app.state.gtfs.data_source == 'GTFS' and any(not route.startswith(('SYN_', 'SAMPLE_')) for route in app.state.gtfs.routes):
+            app.state.ai_gtfs = GTFSService(ROOT / 'datasets/synthetic_chennai')
+            app.state.ai_store = BusStateService(settings.stale_seconds)
+            app.state.ai_events = NetworkEventService(ConnectionManager(), app.state.ai_gtfs)
         app.state.journeys = JourneyService(app.state.gtfs, app.state.nearby, app.state.store, settings.stop_radius_meters)
 
         async def stale_monitor():
